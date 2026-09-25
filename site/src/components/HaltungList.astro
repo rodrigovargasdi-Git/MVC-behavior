@@ -1,0 +1,12 @@
+---
+/** Haltungs-Zusagen (§3.4 Nr. 2). Nur bestätigte Punkte veröffentlichen – siehe site.ts. */
+import { site } from '../content/site';
+import T from './T.astro';
+interface Props { limit?: number }
+const { limit } = Astro.props;
+const items = limit ? site.haltung.slice(0, limit) : site.haltung;
+---
+<ul class="check-list">
+  {items.map((h) => <li><span>{h}</span></li>)}
+</ul>
+{site.haltungNote && <p class="small" style="margin-top:1rem;"><T t={site.haltungNote} /></p>}

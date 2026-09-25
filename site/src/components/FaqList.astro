@@ -1,0 +1,17 @@
+---
+import T from './T.astro';
+import type { Faq } from '../content/faq';
+interface Props { items: Faq[] }
+const { items } = Astro.props;
+---
+<div class="faq-list">
+  {items.map((f) => (
+    <details id={f.id}>
+      <summary>{f.q}</summary>
+      <div class="faq-answer">
+        {f.a.filter((p) => p.trim()).map((p) => <p><T t={p} /></p>)}
+        {f.link && <p><a href={f.link.href}>{f.link.label}</a></p>}
+      </div>
+    </details>
+  ))}
+</div>

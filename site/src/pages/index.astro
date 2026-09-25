@@ -1,0 +1,186 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import T from '../components/T.astro';
+import ProofFacts from '../components/ProofFacts.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import HaltungList from '../components/HaltungList.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../content/site';
+import { faqsFor } from '../content/faq';
+import { cta } from '../lib/nav';
+
+const audiences = [
+  {
+    href: '/leistungen/familien/',
+    bg: 'bg-sand',
+    label: 'Für Familien',
+    title: 'Mehr Orientierung. Weniger allein.',
+    text: 'Wenn Alltag, Kita oder Schule zur Dauerbaustelle werden, entsteht gemeinsam ein Plan, der zu Ihrem Kind und Ihrem Leben passt.',
+    link: 'Angebot für Familien',
+  },
+  {
+    href: '/leistungen/fachkraefte/',
+    bg: 'bg-sea',
+    label: 'Für Fachkräfte',
+    title: 'Supervision, die weiterdenkt.',
+    text: 'Für Therapeut:innen und Teams, die fachlich wachsen und dabei ihre Haltung bewahren wollen: klar, reflektiert und nah an echten Fällen.',
+    link: 'Supervision & Fallberatung',
+  },
+  {
+    href: '/leistungen/institutionen-jugendaemter/',
+    bg: 'bg-lavender',
+    label: 'Für Institutionen & Jugendämter',
+    title: 'Ein gemeinsames Bild für gute Hilfe.',
+    text: 'Fachliche Beratung im Einzelfall, Mitwirkung an Hilfeplan- und Fallgesprächen sowie Konzept- und Qualitätsarbeit.',
+    link: 'Angebot für Institutionen',
+  },
+];
+---
+<BaseLayout
+  title="ABA-Beratung für Familien & Fachkräfte | Marija Vargas"
+  description="Verhaltensanalytische Beratung (ABA) für Familien autistischer Kinder, Supervision für Fachkräfte und Fachberatung für Jugendämter und Träger."
+>
+  <section class="home-hero">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <p class="eyebrow">Angewandte Verhaltensanalyse (ABA) · Beratung · Supervision</p>
+        <h1 class="hero-title">
+          <span class="display-xl">Verhalten verstehen. <em>Möglichkeiten öffnen.</em></span>{' '}
+          <span class="hero-sub">Verhaltensanalytische Beratung für Familien autistischer Kinder, für Fachkräfte und für Jugendämter</span>
+        </h1>
+        <p class="lead hero-lead">
+          Ich begleite Familien autistischer und neurodivergenter Kinder und die Fachkräfte und Ämter um sie herum dabei, Verhalten zu verstehen und im Alltag tragfähige Wege zu finden: respektvoll, transparent und fachlich fundiert. <T t={site.offer.serviceArea} />
+        </p>
+        <div class="btn-row hero-actions">
+          <a class="btn btn-primary" href={cta.familie.href}>{cta.familie.label} <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href="/leistungen/">Alle Leistungen</a>
+        </div>
+        <p class="hero-trust"><Icon name="shield" size={18} /> Vertraulich · keine Diagnostik · keine Notfallversorgung</p>
+      </div>
+
+      <div class="blob-stage reveal reveal-2" aria-hidden="true">
+        <div class="blob blob-a"></div>
+        <div class="blob blob-b"></div>
+        <div class="blob blob-c">
+          <svg viewBox="0 0 380 490">
+            <path class="line-art" d="M158 420c-8-42-7-73 4-105 9-26 24-42 45-56 28-18 42-43 40-73-3-47-32-75-74-74-38 1-64 25-68 60-3 29 12 53 43 67 31 14 39 40 27 72-13 34-19 67-17 109" />
+            <path class="line-art" d="M111 195c-28 12-50 34-64 64-15 31-16 73-4 119M245 191c31 3 58 20 78 50 18 28 25 65 19 112" />
+            <path class="line-art" d="M97 315c34 12 77 18 122 15 44-3 79-15 105-34M87 350c43 24 92 34 146 30 36-2 68-11 96-26" />
+            <circle cx="174" cy="115" r="4" fill="currentColor" /><circle cx="112" cy="195" r="4" fill="currentColor" /><circle cx="245" cy="191" r="4" fill="currentColor" />
+          </svg>
+        </div>
+        <div class="blob blob-dot"></div>
+      </div>
+    </div>
+    <div class="wrap hero-proof">
+      <ProofFacts />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="zielgruppen-titel">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow">Für wen</p>
+          <h2 id="zielgruppen-titel" class="display-md" style="margin-top:1.25rem;">Ein Kind. <em>Viele Perspektiven.</em></h2>
+        </div>
+        <p class="lead" style="align-self:end;">Unterstützung wird dann stark, wenn sie nicht an Zuständigkeitsgrenzen endet. Ich arbeite mit den Menschen, die ein Kind kennen, begleiten und Entscheidungen möglich machen.</p>
+      </div>
+      <ul class="grid-3" style="margin-top:3rem;">
+        {audiences.map((a) => (
+          <li class:list={['card', a.bg]}>
+            <div class="card-link">
+              <p class="eyebrow">{a.label}</p>
+              <h3 class="display-sm">{a.title}</h3>
+              <p class="muted">{a.text}</p>
+              <a class="link-arrow" href={a.href}>{a.link} <Icon name="arrow" /></a>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p style="margin-top:1.5rem;">
+        <a class="link-arrow" href="/fortbildung-supervision/">Fortbildungen, Teamtage und Vorträge <Icon name="arrow" /></a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section bg-paper" aria-labelledby="haltung-titel">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Wie ich arbeite</p>
+        <h2 id="haltung-titel" class="display-md" style="margin-top:1.25rem;">Verhaltensanalyse, <em>mit Haltung.</em></h2>
+        <p class="muted" style="margin-top:1.25rem; max-width: 44ch;">
+          Ich arbeite auf Grundlage der Angewandten Verhaltensanalyse (ABA). Ich weiß, dass ABA in der Autismus-Community kritisch gesehen wird, und sage deshalb offen, wofür meine Arbeit steht.
+        </p>
+        <p style="margin-top:1rem;"><a class="link-arrow" href="/faq/#ist-aba-umstritten">Ist ABA nicht umstritten? <Icon name="arrow" /></a></p>
+      </div>
+      <div>
+        <HaltungList />
+      </div>
+    </div>
+  </section>
+
+  <ProcessSteps />
+
+  <section class="section" aria-labelledby="ueber-titel">
+    <div class="wrap split split-center">
+      <div class="portrait">
+        <p class="small"><T t={site.person.photo} /></p>
+      </div>
+      <div>
+        <p class="eyebrow">Über Marija</p>
+        <h2 id="ueber-titel" class="display-md" style="margin-top:1.25rem;">Fachlichkeit ist am stärksten, wenn sie <em>menschlich bleibt.</em></h2>
+        <p class="lead" style="margin-top:1.25rem;">Ich bin Marija Vargas. Meine Arbeit verbindet Angewandte Verhaltensanalyse und systemisches Denken, mit Respekt für die Perspektive jedes Menschen im Raum.</p>
+        <p class="muted" style="margin-top:1rem;">Neben der Arbeit mit Familien bilde ich Fachkräfte fort und supervidiere Therapeut:innen.</p>
+        <p style="margin-top:1.25rem;"><a class="link-arrow" href="/ueber-marija/">Qualifikation und Werdegang <Icon name="arrow" /></a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sea" aria-labelledby="faq-titel">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Häufige Fragen</p>
+        <h2 id="faq-titel" class="display-md" style="margin-top:1.25rem;">Fragen sind <em>willkommen.</em></h2>
+        <p style="margin-top:1.25rem;"><a class="link-arrow" href="/faq/">Alle Fragen und Antworten <Icon name="arrow" /></a></p>
+      </div>
+      <FaqList items={faqsFor('start')} />
+    </div>
+  </section>
+
+  <CtaBand
+    title="Lassen Sie uns <em>sortieren.</em>"
+    text="Erzählen Sie mir in wenigen Sätzen, worum es geht. Ich melde mich mit einem Vorschlag für ein Erstgespräch."
+    href={cta.familie.href}
+    label={cta.familie.label}
+    secondary={{ href: '/kontakt/', label: 'Andere Anliegen' }}
+  />
+</BaseLayout>
+
+<style>
+  .home-hero { padding-top: clamp(2.5rem, 5vw, 4rem); padding-bottom: clamp(2rem, 4vw, 3rem); overflow: hidden; }
+  .hero-grid { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.08fr 0.92fr; } }
+  .hero-title { margin-top: 1.5rem; }
+  .hero-title .display-xl { display: block; }
+  .hero-sub {
+    display: block;
+    margin-top: 1.25rem;
+    max-width: 40ch;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .hero-lead { margin-top: 1.25rem; max-width: 56ch; }
+  .hero-actions { margin-top: 2rem; }
+  .hero-trust { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.75rem; font-size: 0.95rem; color: var(--ink-muted); }
+  .hero-trust :global(svg) { color: var(--accent); flex: none; }
+  .blob-stage { max-width: 460px; }
+  @media (max-width: 959px) { .blob-stage { max-width: 300px; } }
+  .hero-proof { margin-top: 3rem; }
+</style>

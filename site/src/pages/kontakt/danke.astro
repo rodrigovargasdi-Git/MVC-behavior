@@ -1,0 +1,19 @@
+---
+/** Ziel der Weiterleitung durch den Formular-Endpunkt nach erfolgreichem Versand (ohne JavaScript). */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import T from '../../components/T.astro';
+import { site } from '../../content/site';
+---
+<BaseLayout title="Anfrage gesendet" description="Bestätigung nach dem Absenden des Kontaktformulars." noindex>
+  <PageHero eyebrow="Kontakt" blob="sea">
+    Danke für Ihre <em>Anfrage.</em>
+  </PageHero>
+  <section class="section-tight">
+    <div class="wrap stack measure">
+      <p class="lead">Ihre Nachricht ist bei mir angekommen. Ich antworte <T t={site.contact.responseTime} />.</p>
+      <p class="muted">Falls Sie keine Antwort erhalten, sehen Sie bitte auch im Spam-Ordner nach.</p>
+      <p><a class="link-arrow" href="/">Zur Startseite</a></p>
+    </div>
+  </section>
+</BaseLayout>

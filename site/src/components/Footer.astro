@@ -1,0 +1,76 @@
+---
+import { site, confirmed } from '../content/site';
+import { mainNav, leistungen, legalNav } from '../lib/nav';
+import T from './T.astro';
+
+const email = confirmed(site.contact.email);
+const year = new Date().getFullYear();
+---
+<footer class="site-footer bg-forest on-dark">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <p class="footer-name">{site.brand.name}</p>
+        <p class="muted small">{site.brand.descriptor}</p>
+        <p class="small footer-status"><T t={site.brand.status} /></p>
+        <p class="small muted footer-disclaimer">Beratung, Supervision und Fortbildung. Keine Diagnostik, keine Psychotherapie, keine Notfallversorgung. Im Notfall: 112, ärztlicher Bereitschaftsdienst 116 117.</p>
+      </div>
+
+      <nav aria-label="Leistungen">
+        <p class="footer-head">Leistungen</p>
+        <ul>
+          {leistungen.map((l) => <li><a href={l.href}>{l.long}</a></li>)}
+          <li><a href="/fortbildung-supervision/">Fortbildung &amp; Supervision</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Weitere Seiten">
+        <p class="footer-head">Seiten</p>
+        <ul>
+          {mainNav.filter((i) => i.href !== '/leistungen/' && i.href !== '/fortbildung-supervision/').map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+          <li><a href="/">Startseite</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <p class="footer-head">Kontakt</p>
+        <ul>
+          <li>
+            {email ? <a href={`mailto:${email}`}>{email}</a> : <span class="small"><T t={site.contact.email} /></span>}
+          </li>
+          <li><a href="/kontakt/">Kontaktformular &amp; Anfrage</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="small">© {year} {site.brand.name}</p>
+      <nav aria-label="Rechtliches">
+        <ul class="legal-links">
+          {legalNav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </nav>
+      <p class="small muted">Diese Website setzt keine Cookies und lädt keine Inhalte von Drittanbietern.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { padding-block: 0 2rem; }
+  .site-footer > .wrap { border-top: 1px solid var(--line-on-dark); padding-top: 3rem; }
+  .footer-grid { display: grid; gap: 2.25rem; }
+  @media (min-width: 720px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; } }
+  .footer-name { font-weight: 800; font-size: 1.1rem; }
+  .footer-brand > * + * { margin-top: 0.6rem; }
+  .footer-status { max-width: 36ch; }
+  .footer-disclaimer { max-width: 40ch; }
+  .footer-head { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-on-dark); margin-bottom: 0.5rem; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li a { display: inline-flex; align-items: center; min-height: 40px; padding-block: 0.4rem; color: var(--on-dark); text-decoration: underline; text-decoration-color: rgb(246 241 232 / 0.35); text-underline-offset: 0.3em; }
+  li a:hover { color: var(--accent-on-dark); text-decoration-color: currentColor; }
+  .footer-bottom { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--line-on-dark); display: grid; gap: 0.5rem; align-items: center; }
+  @media (min-width: 900px) { .footer-bottom { grid-template-columns: auto auto 1fr; gap: 2rem; } .footer-bottom p:last-child { text-align: right; } }
+  .legal-links { display: flex; gap: 1.5rem; }
+  .legal-links a { font-weight: 700; }
+</style>

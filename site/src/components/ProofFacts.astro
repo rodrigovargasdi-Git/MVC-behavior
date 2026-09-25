@@ -1,0 +1,13 @@
+---
+/** Belege neben der Aussage (M6). Nur freigegebene Zahlen – siehe site.ts → proof. */
+import { site } from '../content/site';
+import T from './T.astro';
+const items = [
+  { label: 'Erfahrung', value: site.proof.years },
+  { label: 'Qualifikation', value: site.person.credentials[0] },
+  { label: 'Supervision & Fortbildung', value: site.proof.supervised },
+];
+---
+<ul class="facts" aria-label="Belege">
+  {items.map((i) => <li><strong>{i.label}</strong><T t={i.value} /></li>)}
+</ul>

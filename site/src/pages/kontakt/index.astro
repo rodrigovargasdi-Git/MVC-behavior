@@ -1,0 +1,214 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import T from '../../components/T.astro';
+import { site, confirmed, anliegen } from '../../content/site';
+
+// Formular-Endpunkt aus .env (PUBLIC_FORM_ENDPOINT). Leer = kein Formular, nur Kontakt-Hinweis.
+const endpoint = (import.meta.env.PUBLIC_FORM_ENDPOINT ?? '').trim();
+const email = confirmed(site.contact.email);
+const phone = confirmed(site.contact.phone);
+const booking = confirmed(site.contact.bookingUrl);
+
+const mailBody = [
+  'Name:',
+  'Ich bin: Elternteil / Fachkraft / Jugendamt, Träger / Fortbildung, Vortrag / Sonstiges',
+  'Region:',
+  'Kurz, worum es geht (bitte keine Angaben zu Diagnosen oder Gesundheit):',
+  '',
+].join('\n');
+const mailto = email ? `mailto:${email}?subject=${encodeURIComponent('Anfrage über die Website')}&body=${encodeURIComponent(mailBody)}` : undefined;
+---
+<BaseLayout
+  title="Kontakt und Erstgespräch"
+  description="Erstgespräch, Supervision, Fachgespräch oder Fortbildung anfragen. Kurze Anfrage genügt, Details besprechen wir persönlich."
+  breadcrumbs={[{ name: 'Kontakt', href: '/kontakt/' }]}
+>
+  <PageHero eyebrow="Kontakt" blob="sand" lead={`Schreiben Sie mir in wenigen Sätzen, wer Sie sind und worum es geht. Ich antworte ${site.contact.responseTime}.`}>
+    Lassen Sie uns <em>sortieren.</em>
+  </PageHero>
+
+  <section class="section-tight">
+    <div class="wrap contact-grid">
+      <div class="stack-lg">
+        <div>
+          <h2 class="h-plain">Direkter Kontakt</h2>
+          <ul class="contact-list">
+            <li>
+              <Icon name="mail" size={20} />
+              {email ? <a href={`mailto:${email}`}>{email}</a> : <span><T t={site.contact.email} /></span>}
+            </li>
+            <li>
+              <Icon name="phone" size={20} />
+              {phone ? <a href={`tel:${phone.replace(/[^+\d]/g, '')}`}>{phone}</a> : <span><T t={site.contact.phone} /></span>}
+            </li>
+            <li>
+              <Icon name="pin" size={20} />
+              <span><T t={site.offer.serviceArea} /></span>
+            </li>
+          </ul>
+          {booking && (
+            <p style="margin-top:1rem;"><a class="link-arrow" href={booking} rel="noopener">Termin online buchen (externer Anbieter) <Icon name="arrow-up" /></a></p>
+          )}
+        </div>
+
+        <div class="note note-strong">
+          <Icon name="shield" size={20} />
+          <div class="stack">
+            <p><strong>Bitte keine Gesundheitsdaten.</strong> Dieses Formular fragt bewusst nicht nach Diagnosen, Befunden oder dem Verhalten Ihres Kindes. Solche Details besprechen wir vertraulich im Gespräch.</p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="h-plain">So geht es weiter</h2>
+          <ol class="next-steps">
+            <li>Ich lese Ihre Anfrage und antworte persönlich.</li>
+            <li>Wir vereinbaren ein Erstgespräch bzw. ein Fachgespräch.</li>
+            <li>Danach erhalten Sie ein schriftliches Angebot, ohne Verpflichtung.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="form-card" id="anfrage">
+        {endpoint ? (
+          <form action={endpoint} method="post" novalidate data-contact-form>
+            <h2 class="display-sm">Anfrage senden</h2>
+            <p class="small muted" style="margin-top:0.5rem;">Pflichtfelder sind mit * markiert.</p>
+
+            <div class="field-row" style="margin-top:1.5rem;">
+              <div class="field">
+                <label for="f-name">Name *</label>
+                <input id="f-name" name="name" type="text" autocomplete="name" required maxlength="120" aria-describedby="f-name-err" />
+                <p class="field-error" id="f-name-err"></p>
+              </div>
+              <div class="field">
+                <label for="f-email">E-Mail *</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="200" aria-describedby="f-email-err" />
+                <p class="field-error" id="f-email-err"></p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="f-anliegen">Ich bin … *</label>
+              <select id="f-anliegen" name="anliegen" required aria-describedby="f-anliegen-err">
+                <option value="">Bitte auswählen</option>
+                {anliegen.map((a) => <option value={a.value}>{a.label}</option>)}
+              </select>
+              <p class="field-error" id="f-anliegen-err"></p>
+            </div>
+
+            <div class="field">
+              <label for="f-region">Ort oder Region <span class="muted">(optional)</span></label>
+              <input id="f-region" name="region" type="text" autocomplete="address-level2" maxlength="120" />
+            </div>
+
+            <div class="field">
+              <label for="f-nachricht">Kurze Nachricht <span class="muted">(optional)</span></label>
+              <textarea id="f-nachricht" name="nachricht" rows="4" maxlength="600" aria-describedby="f-nachricht-hint"></textarea>
+              <p class="hint" id="f-nachricht-hint">Zum Beispiel: gewünschtes Format oder Zeitraum. Bitte keine Angaben zu Diagnosen, Gesundheit oder Verhalten Ihres Kindes.</p>
+            </div>
+
+            <div class="hp" aria-hidden="true">
+              <label for="f-website">Bitte leer lassen</label>
+              <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <div class="check">
+              <input id="f-datenschutz" name="datenschutz" type="checkbox" value="gelesen" required aria-describedby="f-datenschutz-err" />
+              <label for="f-datenschutz">Ich habe die <a href="/datenschutz/">Datenschutzerklärung</a> gelesen. Meine Angaben werden nur zur Bearbeitung meiner Anfrage verwendet. *</label>
+            </div>
+            <p class="field-error" id="f-datenschutz-err"></p>
+
+            <button class="btn btn-primary" type="submit" style="margin-top:1.5rem; width:100%;" data-submit>Anfrage senden <Icon name="arrow" /></button>
+            <div class="form-status" role="status" aria-live="polite" data-status></div>
+          </form>
+        ) : (
+          <div class="stack" data-form-fallback>
+            <h2 class="display-sm">Anfrage per E-Mail</h2>
+            <p>Das Kontaktformular ist noch nicht freigeschaltet. Bitte schreiben Sie mir direkt eine E-Mail{email ? '' : ' an die folgende Adresse'}.</p>
+            {mailto ? (
+              <p><a class="btn btn-primary" href={mailto}>E-Mail schreiben <Icon name="mail" /></a></p>
+            ) : (
+              <p><T t={site.contact.email} /></p>
+            )}
+            <p class="small muted">Bitte nennen Sie Ihren Namen, ob Sie Elternteil, Fachkraft oder Institution sind, und Ihre Region. Details zu Ihrem Kind besprechen wir im Gespräch. Hinweise zur Verarbeitung Ihrer Angaben finden Sie in der <a href="/datenschutz/">Datenschutzerklärung</a>.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const select = form.querySelector<HTMLSelectElement>('#f-anliegen')!;
+
+    // Vorauswahl über ?anliegen=familie usw. (Links von den Leistungsseiten).
+    const pre = new URLSearchParams(location.search).get('anliegen');
+    if (pre && [...select.options].some((o) => o.value === pre)) select.value = pre;
+
+    const fields: [string, (el: HTMLInputElement) => string][] = [
+      ['f-name', (el) => (el.value.trim() ? '' : 'Bitte geben Sie Ihren Namen ein.')],
+      ['f-email', (el) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()) ? '' : 'Bitte geben Sie eine gültige E-Mail-Adresse ein.')],
+      ['f-anliegen', (el) => (el.value ? '' : 'Bitte wählen Sie aus, wer Sie sind.')],
+      ['f-datenschutz', (el) => (el.checked ? '' : 'Bitte bestätigen Sie, dass Sie die Datenschutzerklärung gelesen haben.')],
+    ];
+
+    const validate = () => {
+      let first: HTMLElement | null = null;
+      for (const [id, check] of fields) {
+        const el = document.getElementById(id) as HTMLInputElement;
+        const msg = check(el);
+        const err = document.getElementById(`${id}-err`)!;
+        err.textContent = msg;
+        el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+        if (msg && !first) first = el;
+      }
+      if (first) first.focus();
+      return !first;
+    };
+
+    const show = (kind: 'ok' | 'err', html: string) => {
+      status.innerHTML = `<div class="status-${kind}">${html}</div>`;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      if (!validate()) return;
+      submit.disabled = true;
+      const label = submit.innerHTML;
+      submit.textContent = 'Wird gesendet …';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        show('ok', '<strong>Danke, Ihre Anfrage ist angekommen.</strong> Ich melde mich persönlich bei Ihnen.');
+      } catch {
+        show('err', '<strong>Die Anfrage konnte nicht gesendet werden.</strong> Bitte versuchen Sie es später erneut oder schreiben Sie mir direkt eine E-Mail (siehe „Direkter Kontakt“).');
+      } finally {
+        submit.disabled = false;
+        submit.innerHTML = label;
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact-grid { display: grid; gap: 2.5rem; align-items: start; }
+  @media (max-width: 959px) { .contact-grid .form-card { order: -1; } }
+  @media (min-width: 960px) { .contact-grid { grid-template-columns: 0.85fr 1.15fr; gap: 4rem; } }
+  .contact-list { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+  .contact-list li { display: flex; gap: 0.75rem; align-items: flex-start; min-height: 44px; padding-top: 0.6rem; }
+  .contact-list :global(svg) { flex: none; color: var(--accent); margin-top: 0.2rem; }
+  .note :global(svg) { flex: none; color: var(--accent); margin-top: 0.2rem; }
+  .next-steps { margin: 0.75rem 0 0; padding-left: 1.25rem; display: grid; gap: 0.5rem; color: var(--ink-muted); }
+</style>

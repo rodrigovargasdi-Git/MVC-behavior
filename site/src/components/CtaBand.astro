@@ -1,0 +1,22 @@
+---
+/** Abschluss-CTA (eine Handlung je Zielgruppe). */
+import Icon from './Icon.astro';
+interface Props { title: string; text?: string; href: string; label: string; secondary?: { href: string; label: string } }
+const { title, text, href, label, secondary } = Astro.props;
+---
+<section class="section-tight bg-forest on-dark">
+  <div class="wrap cta-band">
+    <div>
+      <h2 class="display-md" set:html={title} />
+      {text && <p class="lead" style="margin-top:1rem; max-width: 52ch;">{text}</p>}
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-primary" href={href}>{label} <Icon name="arrow" /></a>
+      {secondary && <a class="link-arrow" href={secondary.href}>{secondary.label}</a>}
+    </div>
+  </div>
+</section>
+<style>
+  .cta-band { display: grid; gap: 2rem; align-items: end; }
+  @media (min-width: 900px) { .cta-band { grid-template-columns: 1.3fr auto; } }
+</style>

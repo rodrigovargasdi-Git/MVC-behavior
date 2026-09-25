@@ -1,0 +1,7 @@
+---
+/** Gibt Text aus und markiert enthaltene Platzhalter „[[BITTE BESTÄTIGEN: …]]“ sichtbar. */
+import { phHtml } from '../lib/ph';
+interface Props { t: string }
+const { t } = Astro.props;
+---
+<Fragment set:html={phHtml(t)} />

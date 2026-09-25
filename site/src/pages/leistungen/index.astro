@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import ProcessSteps from '../../components/ProcessSteps.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { cta } from '../../lib/nav';
+
+const offers = [
+  {
+    href: '/leistungen/familien/', bg: 'bg-sand', label: 'Für Familien',
+    title: 'Beratung und Begleitung für Familien',
+    items: ['Erstgespräch und Einordnung', 'Beobachtung und Kontextanalyse', 'Elternbegleitung im Alltag', 'Abstimmung mit Kita, Schule und Therapien'],
+    cta: cta.familie,
+  },
+  {
+    href: '/leistungen/fachkraefte/', bg: 'bg-sea', label: 'Für Fachkräfte',
+    title: 'Supervision und Fallberatung',
+    items: ['Einzelsupervision', 'Gruppensupervision', 'Fallberatung zu konkreten Situationen', 'Reflexion von Haltung und Methodik'],
+    cta: cta.fachkraft,
+  },
+  {
+    href: '/leistungen/institutionen-jugendaemter/', bg: 'bg-lavender', label: 'Für Institutionen & Jugendämter',
+    title: 'Fachberatung für Jugendämter, Träger und Einrichtungen',
+    items: ['Fachliche Beratung im Einzelfall', 'Mitwirkung an Hilfeplan- und Fallgesprächen', 'Moderierte Fallkonferenzen', 'Konzept- und Qualitätsentwicklung'],
+    cta: cta.institution,
+  },
+];
+---
+<BaseLayout
+  title="Leistungen im Überblick"
+  description="Verhaltensanalytische Beratung (ABA) für Familien, Supervision für Fachkräfte und Fachberatung für Jugendämter und Träger – der Überblick."
+  breadcrumbs={[{ name: 'Leistungen', href: '/leistungen/' }]}
+>
+  <PageHero eyebrow="Leistungen" lead="Drei Wege, ein Ziel: dass Kinder im Alltag besser verstanden werden und die Menschen um sie herum an einem Strang ziehen.">
+    Beratung, Supervision und <em>Fachberatung</em>
+  </PageHero>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <ul class="grid-3">
+        {offers.map((o) => (
+          <li class:list={['card', o.bg]}>
+            <div class="card-link">
+              <p class="eyebrow">{o.label}</p>
+              <h2 class="display-sm">{o.title}</h2>
+              <ul class="check-list">{o.items.map((i) => <li><span>{i}</span></li>)}</ul>
+              <a class="link-arrow" href={o.href}>Mehr erfahren <span class="visually-hidden">({o.label})</span> <Icon name="arrow" /></a>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div class="note" style="margin-top:2rem;">
+        <p><strong>Fortbildungen, Teamtage und Vorträge</strong> für Träger, Schulen, Kitas und Veranstalter finden Sie unter <a href="/fortbildung-supervision/">Fortbildung &amp; Supervision</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Klarer Rahmen</p>
+        <h2 class="display-md" style="margin-top:1.25rem;">Was ich <em>nicht</em> anbiete</h2>
+      </div>
+      <ul class="rule-list">
+        <li><strong>Keine Diagnostik.</strong> <span class="muted">Diagnosen stellen Ärzt:innen und Psycholog:innen. Vorhandene Berichte ordne ich gern mit Ihnen ein.</span></li>
+        <li><strong>Keine Psychotherapie oder Heilbehandlung.</strong> <span class="muted">Mein Angebot ist pädagogische, verhaltensanalytische Beratung und Begleitung.</span></li>
+        <li><strong>Keine Notfallversorgung.</strong> <span class="muted">In akuten Krisen wenden Sie sich bitte an den Notruf 112 oder den ärztlichen Bereitschaftsdienst 116 117.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <ProcessSteps />
+
+  <CtaBand title="Unsicher, was <em>passt?</em>" text="Schreiben Sie mir kurz, wer Sie sind und worum es geht. Ich sage Ihnen offen, ob und wie ich helfen kann." href="/kontakt/" label="Anfrage stellen" />
+</BaseLayout>

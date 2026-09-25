@@ -1,0 +1,23 @@
+---
+interface Props { title?: string }
+const { title = 'Ein guter Prozess <em>gibt Sicherheit.</em>' } = Astro.props;
+const steps = [
+  ['01', 'Ankommen', 'Wir klären, was gerade zählt und wer gehört werden sollte.'],
+  ['02', 'Einordnen', 'Beobachtungen, Beziehungen und Rahmenbedingungen werden zu einem gemeinsamen Bild.'],
+  ['03', 'Handeln', 'Sie erhalten konkrete nächste Schritte, klare Zuständigkeiten und einen realistischen Rhythmus.'],
+];
+---
+<section class="section bg-forest on-dark" aria-labelledby="ablauf-titel">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">Zusammenarbeit</p>
+      <h2 id="ablauf-titel" class="display-md" style="margin-top:1.25rem;" set:html={title} />
+      <p class="lead" style="margin-top:1.25rem; max-width: 36ch;">Sie müssen noch nicht wissen, welche Hilfe Sie brauchen. Dafür ist das Erstgespräch da.</p>
+    </div>
+    <ol class="steps">
+      {steps.map(([n, t, d]) => (
+        <li><span class="num" aria-hidden="true">{n}</span><h3>{t}</h3><p>{d}</p></li>
+      ))}
+    </ol>
+  </div>
+</section>

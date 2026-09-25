@@ -1,0 +1,134 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import T from '../../components/T.astro';
+import HaltungList from '../../components/HaltungList.astro';
+import FaqList from '../../components/FaqList.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { site } from '../../content/site';
+import { faqsFor } from '../../content/faq';
+import { cta } from '../../lib/nav';
+import { serviceLd } from '../../lib/jsonld';
+
+const siteUrl = Astro.site!;
+const situations = [
+  'Verhalten, das den Alltag gerade schwer macht, und Sie fragen sich, was Ihr Kind damit mitteilen will',
+  'Morgen-, Essens- oder Schlafenssituationen, die regelmäßig eskalieren',
+  'Übergänge in Kita oder Schule, die mehr Vorbereitung brauchen',
+  'Kommunikation, die für alle Beteiligten frustrierend ist',
+  'Viele Beteiligte (Kita, Schule, Therapien, Ämter) und niemand, der das Bild zusammenführt',
+];
+const services = [
+  { t: 'Erstgespräch und Einordnung', d: 'Wir klären, was gerade schwierig ist, was sich verändern soll und ob mein Angebot passt.' },
+  { t: 'Beobachtung und Kontextanalyse', d: 'Wann tritt ein Verhalten auf, was geht voraus, was folgt? Daraus entstehen verständliche Hypothesen statt Patentrezepte.' },
+  { t: 'Elternbegleitung im Alltag', d: 'Konkrete, umsetzbare Schritte für Ihre Situation und regelmäßige Termine, um gemeinsam zu prüfen, was hilft.' },
+  { t: 'Abstimmung mit dem Umfeld', d: 'Auf Wunsch spreche ich mit Kita, Schule, Logopädie oder Ergotherapie, damit alle in dieselbe Richtung arbeiten.' },
+];
+---
+<BaseLayout
+  title="Autismus-Beratung für Eltern (ABA)"
+  description="Beratung für Familien autistischer Kinder: Verhalten verstehen, Alltag entlasten, Kita und Schule einbinden. Verhaltensanalytisch fundiert und respektvoll."
+  breadcrumbs={[{ name: 'Leistungen', href: '/leistungen/' }, { name: 'Familien', href: '/leistungen/familien/' }]}
+  jsonLd={[serviceLd(siteUrl, 'Verhaltensanalytische Beratung für Familien', 'Beratung und Begleitung für Familien autistischer und neurodivergenter Kinder auf Grundlage der Angewandten Verhaltensanalyse (ABA).', 'Eltern und Familien', '/leistungen/familien/')]}
+>
+  <PageHero eyebrow="Für Familien" blob="sand" lead={`Wenn Verhalten den Alltag bestimmt, brauchen Sie keine Schuldzuweisung, sondern ein Gegenüber, das mit Ihnen hinschaut. Ich begleite Familien autistischer und neurodivergenter Kinder verhaltensanalytisch fundiert und respektvoll. ${site.offer.serviceArea}`}>
+    Beratung für Familien <em>autistischer Kinder</em>
+    <Fragment slot="actions">
+      <a class="btn btn-primary" href={cta.familie.href}>{cta.familie.label} <Icon name="arrow" /></a>
+      <a class="btn btn-outline" href="#kosten">Kosten</a>
+    </Fragment>
+  </PageHero>
+
+  <section class="section-tight">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Wann ich unterstützen kann</p>
+        <h2 class="display-md" style="margin-top:1.25rem;">Vielleicht kennen Sie <em>das.</em></h2>
+      </div>
+      <ul class="check-list">{situations.map((s) => <li><span>{s}</span></li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section-tight bg-paper">
+    <div class="wrap">
+      <p class="eyebrow">Was Sie bekommen</p>
+      <h2 class="display-md" style="margin-top:1.25rem; max-width: 20ch;">Verstehen, <em>dann handeln.</em></h2>
+      <ul class="grid-2" style="margin-top:2.5rem;">
+        {services.map((s) => (
+          <li class="card bg-sand">
+            <h3 class="h-plain">{s.t}</h3>
+            <p class="muted" style="margin-top:0.5rem;">{s.d}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="small muted" style="margin-top:1.25rem;">Termine vor Ort, zu Hause oder in Kita/Schule: <T t={site.offer.homeVisits} /></p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Haltung</p>
+        <h2 class="display-md" style="margin-top:1.25rem;">Angewandte Verhaltens&shy;analyse, <em>respektvoll.</em></h2>
+        <p class="muted" style="margin-top:1.25rem; max-width: 44ch;">Ich arbeite auf Grundlage der Angewandten Verhaltensanalyse (ABA) und sage offen, wofür das in meiner Praxis steht und wofür nicht.</p>
+        <p style="margin-top:1rem;"><a class="link-arrow" href="/faq/#ist-aba-umstritten">Ist ABA nicht umstritten? <Icon name="arrow" /></a></p>
+      </div>
+      <div><HaltungList /></div>
+    </div>
+  </section>
+
+  <section id="kosten" class="section-tight bg-sea" aria-labelledby="kosten-titel">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Kosten</p>
+        <h2 id="kosten-titel" class="display-md" style="margin-top:1.25rem;">Transparent <em>von Anfang an.</em></h2>
+      </div>
+      <div class="stack">
+        <dl class="price">
+          <div>
+            <dt>Erstgespräch</dt>
+            <dd><span class="price-value"><T t={site.prices.familyInitial} /></span><span class="muted small"><T t={site.prices.familyInitialFormat} /></span></dd>
+          </div>
+          <div>
+            <dt>Weitere Begleitung</dt>
+            <dd><span class="muted">Schriftliches Angebot nach dem Erstgespräch, mit Umfang und Gesamtpreis.</span></dd>
+          </div>
+          <div>
+            <dt>Kurzes Kennenlernen</dt>
+            <dd><span class="muted small"><T t={site.prices.freeIntro} /></span></dd>
+          </div>
+        </dl>
+        <p class="small"><T t={site.prices.vatNote} /></p>
+        <p class="small muted">Absagen: <T t={site.prices.cancellation} /></p>
+        <p class="small muted">Kostenübernahme durch das Jugendamt: im Einzelfall möglich, die Entscheidung trifft das Jugendamt. <a href="/faq/#jugendamt-kosten">Mehr dazu</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="faq-familien">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Fragen von Eltern</p>
+        <h2 id="faq-familien" class="display-md" style="margin-top:1.25rem;">Gut zu <em>wissen.</em></h2>
+      </div>
+      <FaqList items={faqsFor('familie').slice(0, 6)} />
+    </div>
+  </section>
+
+  <CtaBand
+    title="Der erste Schritt: <em>ein Gespräch.</em>"
+    text="Bitte schreiben Sie nur kurz, wer Sie sind und in welcher Region Sie leben. Details zu Ihrem Kind besprechen wir im Gespräch."
+    href={cta.familie.href}
+    label={cta.familie.label}
+  />
+</BaseLayout>
+
+<style>
+  .price { display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .price > div { display: grid; gap: 0.35rem; padding-block: 1rem; border-bottom: 1px solid var(--line); }
+  @media (min-width: 640px) { .price > div { grid-template-columns: 12rem 1fr; align-items: baseline; } }
+  .price dt { font-weight: 800; }
+  .price dd { margin: 0; display: grid; gap: 0.25rem; }
+  .price-value { font-family: var(--font-serif); font-size: 1.6rem; line-height: 1.2; }
+</style>

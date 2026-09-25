@@ -1,0 +1,60 @@
+---
+/**
+ * Impressum nach § 5 DDG (Digitale-Dienste-Gesetz). Vorlage mit Platzhaltern aus site.ts → legal.
+ * Nicht zutreffende Abschnitte löschen. Vor Veröffentlichung rechtlich prüfen lassen.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import T from '../components/T.astro';
+import { site, confirmed } from '../content/site';
+
+const l = site.legal;
+const email = confirmed(site.contact.email);
+const phone = confirmed(site.contact.phone);
+---
+<BaseLayout
+  title="Impressum"
+  description={`Impressum von ${site.brand.name}: Anbieterkennzeichnung nach § 5 DDG.`}
+  breadcrumbs={[{ name: 'Impressum', href: '/impressum/' }]}
+>
+  <section class="section-tight">
+    <div class="wrap"><div class="prose">
+      <h1 class="display-lg">Impressum</h1>
+      <p class="legal-warning" role="note">Entwurf – vor Veröffentlichung rechtlich prüfen lassen. Alle markierten Angaben ergänzen oder nicht zutreffende Abschnitte löschen.</p>
+
+      <h2>Angaben gemäß § 5 DDG</h2>
+      <p>
+        <T t={l.ownerName} /><br />
+        {site.brand.name}<br />
+        <T t={l.street} /><br />
+        <T t={l.postalCity} /><br />
+        {l.country}
+      </p>
+      <p>Rechtsform: <T t={l.legalForm} /></p>
+
+      <h2>Kontakt</h2>
+      <p>
+        E-Mail: {email ? <a href={`mailto:${email}`}>{email}</a> : <T t={site.contact.email} />}<br />
+        Telefon: {phone ? <a href={`tel:${phone.replace(/[^+\d]/g, '')}`}>{phone}</a> : <T t={site.contact.phone} />}
+      </p>
+
+      <h2>Umsatzsteuer-Identifikationsnummer</h2>
+      <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: <T t={l.vatId} /></p>
+
+      <h2>Berufsbezeichnung und berufsrechtliche Regelungen</h2>
+      <p>Berufsbezeichnung: <T t={l.professionalTitle} /></p>
+      <p>Zuständige Aufsichtsbehörde / Kammer: <T t={l.supervisoryAuthority} /></p>
+
+      <h2>Berufshaftpflichtversicherung</h2>
+      <p><T t={l.liabilityInsurance} /></p>
+
+      <h2>Verbraucherstreitbeilegung</h2>
+      <p>Ich bin nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen. <T t={l.vsbgNote} /></p>
+
+      <h2>Haftung für Links</h2>
+      <p>Diese Website enthält Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Bei Bekanntwerden von Rechtsverletzungen entferne ich derartige Links umgehend.</p>
+
+      <h2>Hinweis zum Angebot</h2>
+      <p>Das Angebot umfasst pädagogische, verhaltensanalytische Beratung, Supervision und Fortbildung. Es ersetzt keine ärztliche oder psychologische Diagnostik, keine Psychotherapie und keine Notfallversorgung.</p>
+    </div></div>
+  </section>
+</BaseLayout>

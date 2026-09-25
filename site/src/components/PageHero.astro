@@ -1,0 +1,15 @@
+---
+/** Kopfbereich innerer Seiten: Eyebrow, eine H1, Lead, optionale Buttons (Slot „actions“). */
+import T from './T.astro';
+interface Props { eyebrow: string; lead?: string; blob?: 'sea' | 'lavender' | 'sand' }
+const { eyebrow, lead, blob = 'sea' } = Astro.props;
+const blobVar = `--hero-blob: var(--${blob})`;
+---
+<section class="page-hero" style={blobVar}>
+  <div class="wrap">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1 class="display-lg" style="margin-top:1.25rem; max-width: 18ch;"><slot /></h1>
+    {lead && <p class="lead"><T t={lead} /></p>}
+    {Astro.slots.has('actions') && <div class="btn-row"><slot name="actions" /></div>}
+  </div>
+</section>

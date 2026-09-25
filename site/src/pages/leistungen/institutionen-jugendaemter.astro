@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import T from '../../components/T.astro';
+import FaqList from '../../components/FaqList.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { site } from '../../content/site';
+import { faqsFor } from '../../content/faq';
+import { cta } from '../../lib/nav';
+import { serviceLd } from '../../lib/jsonld';
+
+const siteUrl = Astro.site!;
+// Wortwahl nach Evaluation M11: Hilfeplanung und Fallsteuerung bleiben beim Jugendamt.
+const services = [
+  { t: 'Fachliche Beratung im Einzelfall', d: 'Verhaltensanalytische Einschätzung einer konkreten Situation: nachvollziehbar dokumentiert und in verständlicher Sprache.' },
+  { t: 'Mitwirkung an Hilfeplan- und Fallgesprächen', d: 'Fachliche Beratung zur Hilfeplanung, nach Absprache mit Familie und Jugendamt. Die Entscheidung bleibt beim Jugendamt.' },
+  { t: 'Moderierte Fallkonferenzen', d: 'Wenn mehrere Systeme beteiligt sind: ein gemeinsames Bild und klare nächste Schritte.' },
+  { t: 'Konzept- und Qualitätsentwicklung', d: 'Für Träger und Einrichtungen, die autismusspezifische Förderung fachlich und ethisch weiterentwickeln wollen.' },
+];
+---
+<BaseLayout
+  title="Fachberatung Autismus für Jugendämter"
+  description="Fachberatung für Jugendämter, Träger und Einrichtungen: Einzelfallberatung, Mitwirkung an Hilfeplangesprächen, Fallkonferenzen, Konzeptarbeit."
+  breadcrumbs={[{ name: 'Leistungen', href: '/leistungen/' }, { name: 'Institutionen & Jugendämter', href: '/leistungen/institutionen-jugendaemter/' }]}
+  jsonLd={[serviceLd(siteUrl, 'Fachberatung für Jugendämter, Träger und Einrichtungen', 'Verhaltensanalytische Fachberatung im Einzelfall, Mitwirkung an Hilfeplan- und Fallgesprächen, moderierte Fallkonferenzen sowie Konzept- und Qualitätsentwicklung.', 'Jugendämter, Träger und Einrichtungen', '/leistungen/institutionen-jugendaemter/')]}
+>
+  <PageHero eyebrow="Für Institutionen & Jugendämter" blob="lavender" lead="Wenn mehrere Systeme beteiligt sind, wird Unterstützung schnell unübersichtlich. Ich trage zu einer fachlich belastbaren, nachvollziehbaren Grundlage für Ihre Entscheidungen bei, mit dem Kind und seiner Lebenswelt im Mittelpunkt.">
+    Fachberatung für Jugendämter, <em>Träger und Einrichtungen</em>
+    <Fragment slot="actions">
+      <a class="btn btn-primary" href={cta.institution.href}>{cta.institution.label} <Icon name="arrow" /></a>
+    </Fragment>
+  </PageHero>
+
+  <section class="section-tight bg-paper">
+    <div class="wrap">
+      <p class="eyebrow">Leistungen</p>
+      <h2 class="display-md" style="margin-top:1.25rem;">Komplexe Fälle. <em>Klare nächste Schritte.</em></h2>
+      <ul class="grid-2" style="margin-top:2.5rem;">
+        {services.map((s) => (
+          <li class="card bg-lavender">
+            <h3 class="h-plain">{s.t}</h3>
+            <p class="muted" style="margin-top:0.5rem;">{s.d}</p>
+          </li>
+        ))}
+      </ul>
+      <p style="margin-top:1.5rem;"><a class="link-arrow" href="/fortbildung-supervision/">Fortbildungen und Teamtage für Ihre Fachkräfte <Icon name="arrow" /></a></p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Rahmen</p>
+        <h2 class="display-md" style="margin-top:1.25rem;">Klar vereinbart, <em>bevor es losgeht.</em></h2>
+      </div>
+      <dl class="meta-list">
+        <div><dt>Auftragsklärung</dt><dd>Ziel, Rollen, Umfang, Datenschutz und Berichtswesen werden vorab schriftlich festgehalten.</dd></div>
+        <div><dt>Methode</dt><dd>Angewandte Verhaltensanalyse (ABA) mit Fokus auf Kommunikation, Teilhabe und Lebensqualität. <a href="/ueber-marija/#haltung">Zur Haltung</a></dd></div>
+        <div><dt>Qualifikation</dt><dd><a href="/ueber-marija/#qualifikation">Qualifikation und Werdegang</a></dd></div>
+        <div><dt>Einsatzgebiet</dt><dd><T t={site.offer.serviceArea} /></dd></div>
+        <div><dt>Abrechnung</dt><dd><T t={site.prices.jugendamtRates} /></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section-tight bg-sand" aria-labelledby="finanzierung-titel">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Finanzierung</p>
+        <h2 id="finanzierung-titel" class="display-md" style="margin-top:1.25rem;">Eingliederungshilfe nach <em>§ 35a SGB VIII</em></h2>
+      </div>
+      <div class="stack">
+        <p>Für Kinder und Jugendliche mit einer Autismus-Spektrum-Störung kann eine autismusspezifische Förderung als Eingliederungshilfe nach § 35a SGB VIII in Betracht kommen. Ob und in welchem Umfang das möglich ist, entscheidet das Jugendamt im Einzelfall.</p>
+        <p class="muted">Ich stelle Ihnen gern die Informationen zur Verfügung, die Sie für Ihre Prüfung brauchen, und unterstütze Familien bei den Unterlagen. Eine Kostenübernahme kann ich nicht zusagen.</p>
+        <p class="small"><T t={site.checks.jugendamtFunding} /></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" aria-labelledby="faq-institutionen">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Fragen</p>
+        <h2 id="faq-institutionen" class="display-md" style="margin-top:1.25rem;">Gut zu <em>wissen.</em></h2>
+      </div>
+      <FaqList items={faqsFor('institution')} />
+    </div>
+  </section>
+
+  <CtaBand title="Ein Fachgespräch <em>vereinbaren.</em>" text="Beschreiben Sie kurz Ihre Einrichtung und Ihr Anliegen, ohne personenbezogene Falldaten. Details klären wir im Gespräch." href={cta.institution.href} label={cta.institution.label} />
+</BaseLayout>

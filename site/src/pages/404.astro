@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { mainNav, leistungen } from '../lib/nav';
+---
+<BaseLayout title="Seite nicht gefunden" description="Diese Seite gibt es nicht (mehr). Hier geht es weiter." noindex>
+  <PageHero eyebrow="Fehler 404" blob="lavender" lead="Diese Seite gibt es nicht oder nicht mehr. Vielleicht hilft einer dieser Wege weiter.">
+    Hier geht es <em>nicht weiter.</em>
+  </PageHero>
+  <section class="section-tight">
+    <div class="wrap">
+      <ul class="rule-list measure">
+        <li><a class="link-arrow" href="/">Startseite <Icon name="arrow" /></a></li>
+        {leistungen.map((l) => <li><a class="link-arrow" href={l.href}>{l.long} <Icon name="arrow" /></a></li>)}
+        {mainNav.filter((i) => i.href !== '/leistungen/').map((i) => <li><a class="link-arrow" href={i.href}>{i.label} <Icon name="arrow" /></a></li>)}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

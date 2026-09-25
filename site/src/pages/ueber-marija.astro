@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import T from '../components/T.astro';
+import HaltungList from '../components/HaltungList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../content/site';
+import { cta } from '../lib/nav';
+
+const facts = [
+  { dt: 'Berufsbezeichnung', dd: site.person.jobTitle },
+  { dt: 'Erfahrung', dd: site.proof.years },
+  { dt: 'Supervision', dd: site.proof.supervised },
+  { dt: 'Fortbildungen & Vorträge', dd: site.proof.trainings },
+  { dt: 'Arbeitssprachen', dd: site.person.languages },
+  { dt: 'Einsatzgebiet', dd: site.offer.serviceArea },
+];
+---
+<BaseLayout
+  title="Über mich: Qualifikation & Haltung"
+  description="Marija Vargas verbindet Angewandte Verhaltensanalyse (ABA) und systemisches Denken. Qualifikation, Erfahrung und Haltung in der Arbeit mit Familien und Fachkräften."
+  breadcrumbs={[{ name: 'Über Marija', href: '/ueber-marija/' }]}
+  ogType="profile"
+>
+  <PageHero eyebrow="Über Marija" blob="lavender" lead="Ich bin Marija Vargas. Meine Arbeit verbindet Angewandte Verhaltensanalyse (ABA) und systemisches Denken, mit Respekt für die Perspektive jedes Menschen im Raum.">
+    Fachlichkeit, die <em>menschlich bleibt.</em>
+  </PageHero>
+
+  <section class="section-tight">
+    <div class="wrap split split-center">
+      <div class="portrait">
+        <p class="small"><T t={site.person.photo} /></p>
+      </div>
+      <div class="stack">
+        <p class="lead">Mich interessiert nicht nur, was passiert. Mich interessiert, was ein Umfeld möglich macht, und wie aus vielen guten Absichten ein verlässlicher gemeinsamer Weg wird.</p>
+        <p class="muted">Ich begleite Familien autistischer und neurodivergenter Kinder, supervidiere Therapeut:innen und bilde Fachkräfte fort. Dabei arbeite ich neugierig, evidenzorientiert, kultursensibel und im Dialog mit allen, die ein Kind begleiten.</p>
+        <div class="btn-row" style="margin-top:1.5rem;">
+          <a class="btn btn-primary" href={cta.familie.href}>{cta.familie.label} <Icon name="arrow" /></a>
+          <a class="btn btn-outline" href={cta.fachkraft.href}>{cta.fachkraft.label}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="qualifikation" class="section-tight bg-paper" aria-labelledby="quali-titel">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Qualifikation</p>
+        <h2 id="quali-titel" class="display-md" style="margin-top:1.25rem;">Abschlüsse und <em>Erfahrung</em></h2>
+      </div>
+      <div>
+        <h3 class="h-plain">Abschlüsse und Zertifizierungen</h3>
+        <ul class="check-list" style="margin-top:0.75rem;">
+          {site.person.credentials.map((c) => <li><span><T t={c} /></span></li>)}
+        </ul>
+        <dl class="meta-list">
+          {facts.map((f) => <div><dt>{f.dt}</dt><dd><T t={f.dd} /></dd></div>)}
+        </dl>
+        <h3 class="h-plain" style="margin-top:2rem;">Mitgliedschaften</h3>
+        <ul class="check-list" style="margin-top:0.75rem;">
+          {site.person.memberships.map((m) => <li><span><T t={m} /></span></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="haltung" class="section-tight" aria-labelledby="haltung-titel">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Haltung</p>
+        <h2 id="haltung-titel" class="display-md" style="margin-top:1.25rem;">Wie ich <em>arbeite</em></h2>
+        <p class="muted" style="margin-top:1.25rem; max-width: 44ch;">Angewandte Verhaltensanalyse wird in der Autismus-Community zu Recht kritisch diskutiert. Deshalb mache ich transparent, woran Sie meine Arbeit messen können.</p>
+        <p style="margin-top:1rem;"><a class="link-arrow" href="/faq/#ist-aba-umstritten">Ist ABA nicht umstritten? <Icon name="arrow" /></a></p>
+      </div>
+      <div>
+        <HaltungList />
+        <p class="small muted" style="margin-top:1.25rem;">Ich verspreche keine Ergebnisse. Jede Begleitung prüfen wir gemeinsam daraufhin, ob sie Ihrem Kind und Ihrer Familie guttut.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight bg-sea" aria-labelledby="stimmen-titel">
+    <div class="wrap">
+      <p class="eyebrow">Stimmen aus der Zusammenarbeit</p>
+      <h2 id="stimmen-titel" class="display-md" style="margin-top:1.25rem;">Was Fachkräfte <em>sagen</em></h2>
+      {site.testimonials.length > 0 ? (
+        <ul class="grid-3" style="margin-top:2rem;">
+          {site.testimonials.map((t) => (
+            <li class="card">
+              <figure style="margin:0;">
+                <blockquote style="margin:0;"><p>„{t.quote}“</p></blockquote>
+                <figcaption class="small muted" style="margin-top:1rem;"><strong>{t.author}</strong>, {t.role}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p style="margin-top:1.5rem;"><T t={site.testimonialsNote} /></p>
+      )}
+    </div>
+  </section>
+
+  <CtaBand title="Lernen wir uns <em>kennen.</em>" href={cta.familie.href} label={cta.familie.label} secondary={{ href: '/kontakt/', label: 'Andere Anliegen' }} />
+</BaseLayout>

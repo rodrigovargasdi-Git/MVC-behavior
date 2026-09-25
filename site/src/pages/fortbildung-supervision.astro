@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import T from '../components/T.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../content/site';
+import { cta } from '../lib/nav';
+import { serviceLd } from '../lib/jsonld';
+
+const siteUrl = Astro.site!;
+---
+<BaseLayout
+  title="Fortbildung & Supervision zu Autismus"
+  description="Inhouse-Fortbildungen, Teamtage, Teamsupervision und Vorträge zu Autismus, Verhalten und respektvoller verhaltensanalytischer Praxis für Träger, Kitas und Schulen."
+  breadcrumbs={[{ name: 'Fortbildung & Supervision', href: '/fortbildung-supervision/' }]}
+  jsonLd={[serviceLd(siteUrl, 'Fortbildung, Teamsupervision und Vorträge', 'Inhouse-Fortbildungen, Teamtage, Teamsupervision und Vorträge zu Autismus, Verhalten und verhaltensanalytischer Praxis.', 'Träger, Einrichtungen, Schulen, Kitas und Veranstalter', '/fortbildung-supervision/')]}
+>
+  <PageHero eyebrow="Fortbildung & Supervision" blob="lavender" lead="Für Träger, Einrichtungen, Schulen, Kitas und Veranstalter: Formate, die Fachlichkeit übersetzen und Teams ins Gespräch bringen, ohne die Beziehung zum Kind aus dem Blick zu verlieren.">
+    Wissen, das im <em>Alltag ankommt.</em>
+    <Fragment slot="actions">
+      <a class="btn btn-primary" href={cta.fortbildung.href}>{cta.fortbildung.label} <Icon name="arrow" /></a>
+    </Fragment>
+  </PageHero>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <ul class="grid-3">
+        <li class="card bg-forest on-dark">
+          <p class="eyebrow">Inhouse</p>
+          <h2 class="display-sm" style="margin-top:1rem;">Fortbildungen</h2>
+          <p class="muted" style="margin-top:0.75rem;">Halb- oder ganztägig, bei Ihnen vor Ort oder online, zugeschnitten auf Ihr Team und Ihre Fälle.</p>
+        </li>
+        <li class="card bg-sand">
+          <p class="eyebrow">Individuell</p>
+          <h2 class="display-sm" style="margin-top:1rem;">Teamtage</h2>
+          <p class="muted" style="margin-top:0.75rem;">Gemeinsame Sprache, klare Rollen und konkrete Vereinbarungen für den Montag danach.</p>
+        </li>
+        <li class="card bg-sea">
+          <p class="eyebrow">Laufend</p>
+          <h2 class="display-sm" style="margin-top:1rem;">Teamsupervision</h2>
+          <p class="muted" style="margin-top:0.75rem;">Regelmäßige Fallarbeit und Reflexion. Für einzelne Fachkräfte: <a href="/leistungen/fachkraefte/">Supervision &amp; Fallberatung</a>.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-tight bg-paper" aria-labelledby="themen-titel">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Themen</p>
+        <h2 id="themen-titel" class="display-md" style="margin-top:1.25rem;">Mögliche <em>Schwerpunkte</em></h2>
+      </div>
+      <div>
+        <ul class="rule-list">
+          {site.offer.trainingTopics.map((t) => <li><strong>{t}</strong></li>)}
+        </ul>
+        <p class="small" style="margin-top:1rem;"><T t={site.offer.trainingTopicsNote} /></p>
+        <p class="muted" style="margin-top:1rem;">Inhalte und Umfang stimme ich vorab mit Ihnen ab. Die Kosten erhalten Sie als schriftliches Angebot.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight bg-sea" aria-labelledby="vortraege-titel">
+    <div class="wrap split split-center">
+      <div>
+        <p class="eyebrow">Vorträge &amp; Fachtage</p>
+        <h2 id="vortraege-titel" class="display-md" style="margin-top:1.25rem;">Ein Vortrag, der <em>etwas in Bewegung bringt.</em></h2>
+        <p class="muted" style="margin-top:1.25rem; max-width: 50ch;">Für Kongresse, Fachtage und interne Veranstaltungen: verständliche Impulse über Verhalten, Neurodivergenz und die Systeme, die Kinder unterstützen sollen.</p>
+        <ul class="tags" aria-label="Formate">
+          <li>Keynote</li><li>Workshop</li><li>Panel &amp; Moderation</li>
+        </ul>
+        <p class="small muted" style="margin-top:1rem;">Sprachen: <T t={site.person.languages} /></p>
+      </div>
+      <figure class="quote-card">
+        <p class="eyebrow">Beispielthema</p>
+        <blockquote class="display-sm">{site.offer.talkExample}</blockquote>
+        <figcaption class="small"><T t={site.offer.talkNote} /></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <CtaBand title="Termin oder Format <em>anfragen.</em>" text="Nennen Sie mir Anlass, Zielgruppe, ungefähres Datum und Ort. Ich melde mich mit Verfügbarkeit und einem Vorschlag." href={cta.fortbildung.href} label={cta.fortbildung.label} />
+</BaseLayout>
+
+<style>
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .tags li { padding: 0.45rem 1rem; border: 1.5px solid var(--forest); border-radius: 999px; font-weight: 700; font-size: 0.9rem; }
+  .quote-card { margin: 0; padding: clamp(1.5rem, 4vw, 2.5rem); border-radius: var(--radius-lg); background: var(--bg); display: grid; gap: 1rem; }
+  .quote-card blockquote { margin: 0; }
+</style>

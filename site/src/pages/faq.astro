@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { faqs, faqGroups, confirmedFaqs } from '../content/faq';
+import { faqLd } from '../lib/jsonld';
+import { cta } from '../lib/nav';
+
+// FAQPage-Markup nur mit vollständig bestätigten Antworten (keine Platzhalter in strukturierten Daten).
+const ldItems = confirmedFaqs().map((f) => ({ q: f.q, a: f.a.filter((p) => p.trim()).join(' ') }));
+const slug = (g: string) => g.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+<BaseLayout
+  title="Häufige Fragen zu ABA, Ablauf und Kosten"
+  description="Antworten zu Angewandter Verhaltensanalyse (ABA) und der Kritik daran, zu Ablauf, Kosten, Jugendamt-Finanzierung und Datenschutz."
+  breadcrumbs={[{ name: 'FAQ', href: '/faq/' }]}
+  jsonLd={ldItems.length ? [faqLd(ldItems)] : []}
+>
+  <PageHero eyebrow="FAQ" blob="sea" lead="Noch etwas unklar? Schreiben Sie mir gern. Lieber eine Frage mehr als eine Hürde zu viel.">
+    Fragen sind <em>willkommen.</em>
+  </PageHero>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <nav aria-label="Themen der FAQ" class="faq-toc">
+        <ul>
+          {faqGroups.map((g) => <li><a href={`#${slug(g)}`}>{g}</a></li>)}
+        </ul>
+      </nav>
+      {faqGroups.map((g) => (
+        <section class="faq-group" aria-labelledby={slug(g)}>
+          <h2 id={slug(g)} class="display-sm">{g}</h2>
+          <FaqList items={faqs.filter((f) => f.group === g)} />
+        </section>
+      ))}
+    </div>
+  </section>
+
+  <CtaBand title="Ihre Frage war <em>nicht dabei?</em>" text="Schreiben Sie mir. Ich antworte persönlich." href="/kontakt/" label="Frage stellen" secondary={{ href: cta.familie.href, label: cta.familie.label }} />
+</BaseLayout>
+
+<script>
+  // Direktlinks (z. B. /faq/#ist-aba-umstritten) öffnen die passende Frage.
+  const open = () => {
+    const el = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+    if (el instanceof HTMLDetailsElement) { el.open = true; el.scrollIntoView(); }
+  };
+  open();
+  addEventListener('hashchange', open);
+</script>
+
+<style>
+  .faq-toc ul { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 0; padding: 0; }
+  .faq-toc a { display: inline-flex; align-items: center; min-height: 44px; padding: 0.5rem 1rem; border: 1.5px solid var(--forest); border-radius: 999px; font-weight: 700; font-size: 0.95rem; text-decoration: none; }
+  .faq-toc a:hover { background: rgb(24 59 48 / 0.06); }
+  .faq-group { margin-top: 3rem; max-width: 820px; }
+  .faq-group h2 { margin-bottom: 1rem; scroll-margin-top: calc(var(--header-h) + 16px); }
+</style>

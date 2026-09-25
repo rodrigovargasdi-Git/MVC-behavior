@@ -1,0 +1,93 @@
+---
+import '@fontsource-variable/manrope/wght.css';
+import '@fontsource/dm-serif-display/latin-400.css';
+import '@fontsource/dm-serif-display/latin-400-italic.css';
+import '@fontsource/space-mono/latin-400.css';
+import '../styles/global.css';
+import manropeLatin from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import serifLatin from '@fontsource/dm-serif-display/files/dm-serif-display-latin-400-normal.woff2?url';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { site } from '../content/site';
+import { orgGraph, breadcrumbLd } from '../lib/jsonld';
+import { stripPh } from '../lib/ph';
+
+interface Crumb { name: string; href: string }
+interface Props {
+  /** Seitentitel ohne Marke, ≤ ~44 Zeichen (wird zu „… | Marija Vargas“). */
+  title: string;
+  /** Meta-Description, ≤ 155 Zeichen. */
+  description: string;
+  /** Brotkrumen ohne „Start“ (wird ergänzt). Leer = Startseite. */
+  breadcrumbs?: Crumb[];
+  /** Zusätzliche JSON-LD-Knoten (Service, FAQPage …). */
+  jsonLd?: object[];
+  noindex?: boolean;
+  ogType?: 'website' | 'profile';
+}
+
+const { title, description, breadcrumbs = [], jsonLd = [], noindex = false, ogType = 'website' } = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://vargas-behavior.example');
+const canonical = new URL(Astro.url.pathname, siteUrl).href;
+const fullTitle = Astro.url.pathname === '/' ? `${stripPh(title)}` : `${stripPh(title)} | ${site.person.name}`;
+const desc = stripPh(description);
+const ogImage = new URL('/og-image.png', siteUrl).href;
+const envNoindex = import.meta.env.PUBLIC_NOINDEX === 'true';
+const robots = noindex || envNoindex ? 'noindex, nofollow' : 'index, follow';
+
+const crumbs: Crumb[] = breadcrumbs.length ? [{ name: 'Start', href: '/' }, ...breadcrumbs] : [];
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    ...orgGraph(siteUrl),
+    ...(crumbs.length ? [breadcrumbLd(siteUrl, crumbs)] : []),
+    ...jsonLd,
+  ],
+};
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#f6f1e8" />
+    <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={serifLatin} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content={site.brand.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.brand.name} – Verhalten verstehen. Möglichkeiten öffnen.`} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(graph)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+    <Header />
+    <main id="inhalt" tabindex="-1">
+      {crumbs.length > 0 && <Breadcrumbs items={crumbs} />}
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  main:focus { outline: none; }
+</style>

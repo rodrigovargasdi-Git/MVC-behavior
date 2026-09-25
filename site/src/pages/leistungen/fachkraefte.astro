@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import T from '../../components/T.astro';
+import FaqList from '../../components/FaqList.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { site } from '../../content/site';
+import { faqsFor } from '../../content/faq';
+import { cta } from '../../lib/nav';
+import { serviceLd } from '../../lib/jsonld';
+
+const siteUrl = Astro.site!;
+const formats = [
+  { t: 'Einzelsupervision', d: 'Regelmäßige Reflexion Ihrer Fälle und Ihrer Rolle, in einem geschützten Rahmen.' },
+  { t: 'Gruppensupervision', d: 'Fallarbeit im kleinen Kreis: voneinander lernen, gemeinsame Sprache entwickeln.' },
+  { t: 'Fallberatung', d: 'Punktuelle fachliche Beratung zu einer konkreten, festgefahrenen Situation.' },
+  { t: 'Supervision für Teams', d: 'Für ABA-Teams und Einrichtungen, die Qualität und Haltung gemeinsam weiterentwickeln wollen.' },
+];
+const audience = [
+  'ABA-Therapeut:innen und Verhaltensanalytiker:innen in Ausbildung oder Praxis',
+  'Heilpädagogische und pädagogische Fachkräfte in Frühförderung, Kita und Schule',
+  'Schulbegleitungen und Integrationshilfen',
+  'Teams in Einrichtungen der Kinder- und Jugendhilfe und Eingliederungshilfe',
+];
+---
+<BaseLayout
+  title="ABA-Supervision & Fallberatung"
+  description="Supervision und Fallberatung für ABA-Therapeut:innen, pädagogische Fachkräfte und Teams: fachlich klar, reflektiert und nah an echten Fällen."
+  breadcrumbs={[{ name: 'Leistungen', href: '/leistungen/' }, { name: 'Fachkräfte', href: '/leistungen/fachkraefte/' }]}
+  jsonLd={[serviceLd(siteUrl, 'Supervision und Fallberatung für Fachkräfte', 'Einzel- und Gruppensupervision sowie Fallberatung für Fachkräfte, die mit autistischen und neurodivergenten Kindern arbeiten.', 'Fachkräfte und Teams', '/leistungen/fachkraefte/')]}
+>
+  <PageHero eyebrow="Für Fachkräfte" blob="sea" lead="Für Therapeut:innen und Teams, die fachlich wachsen und dabei ihre Haltung bewahren wollen. Verhaltensanalytisch fundiert, reflektiert und nah an Ihren echten Fällen.">
+    Supervision und Fallberatung <em>für Fachkräfte</em>
+    <Fragment slot="actions">
+      <a class="btn btn-primary" href={cta.fachkraft.href}>{cta.fachkraft.label} <Icon name="arrow" /></a>
+    </Fragment>
+  </PageHero>
+
+  <section class="section-tight">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Für wen</p>
+        <h2 class="display-md" style="margin-top:1.25rem;">Wenn Fälle <em>komplex</em> werden.</h2>
+      </div>
+      <ul class="check-list">{audience.map((a) => <li><span>{a}</span></li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section-tight bg-paper">
+    <div class="wrap">
+      <p class="eyebrow">Formate</p>
+      <h2 class="display-md" style="margin-top:1.25rem;">Supervision, <em>die weiterdenkt.</em></h2>
+      <ul class="grid-2" style="margin-top:2.5rem;">
+        {formats.map((f) => (
+          <li class="card bg-sea">
+            <h3 class="h-plain">{f.t}</h3>
+            <p class="muted" style="margin-top:0.5rem;">{f.d}</p>
+          </li>
+        ))}
+      </ul>
+      <dl class="meta-list">
+        <div><dt>Ort</dt><dd><T t={site.offer.serviceArea} /></dd></div>
+        <div><dt>Anrechnung &amp; Gruppengröße</dt><dd><T t={site.offer.supervisionHours} /></dd></div>
+        <div><dt>Qualifikation</dt><dd><a href="/ueber-marija/#qualifikation">Qualifikation und Werdegang</a></dd></div>
+        <div><dt>Kosten</dt><dd>Auf Anfrage, als schriftliches Angebot.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Worum es geht</p>
+        <h2 class="display-md" style="margin-top:1.25rem;">Methodik und <em>Haltung</em> zusammen denken.</h2>
+      </div>
+      <div class="stack">
+        <p class="lead">Gute verhaltensanalytische Praxis ist mehr als die richtige Technik. In der Supervision geht es um Fallverständnis, um ethische Fragen, um die Zusammenarbeit mit Familien und um Ihre eigene Rolle.</p>
+        <p class="muted">Ich lege Wert auf Ziele, die für das Kind bedeutsam sind, auf die Zustimmung des Kindes und auf eine Sprache, die Familien nicht beschämt. <a href="/ueber-marija/#haltung">Zur Haltung</a></p>
+        <p class="muted">Sie suchen eine Fortbildung oder einen Teamtag für Ihre ganze Einrichtung? <a href="/fortbildung-supervision/">Fortbildung &amp; Supervision</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight bg-sea" aria-labelledby="faq-fachkraefte">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Fragen</p>
+        <h2 id="faq-fachkraefte" class="display-md" style="margin-top:1.25rem;">Gut zu <em>wissen.</em></h2>
+      </div>
+      <FaqList items={faqsFor('fachkraft')} />
+    </div>
+  </section>
+
+  <CtaBand title="Supervision <em>anfragen.</em>" text="Schreiben Sie mir kurz, in welchem Feld Sie arbeiten und welches Format Sie suchen." href={cta.fachkraft.href} label={cta.fachkraft.label} />
+</BaseLayout>
+
