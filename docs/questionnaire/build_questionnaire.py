@@ -47,7 +47,7 @@ QUESTIONS = [
     ("text", "contract_notes", "Notes (e.g. hours you can offer, what you must not offer)", 2),
 
     ("section", "3. Credentials & experience", "Only what you confirm in writing will appear on the website."),
-    ("check", "certs", "Certifications (tick all that apply)", ["BCBA", "BCaBA", "IBA (International Behavior Analyst)", "QBA / RBT", "Other"], ""),
+    ("check", "certs", "Certifications (tick all that apply)", ["BCBA (BACB)", "BCaBA", "IBA (International Behavior Analyst, IBAO)", "QBA / RBT", "None of these", "Other"], "Please add certificate numbers or registry links in the next field so we can link to the official registry."),
     ("text", "degrees", "Degrees — exact titles, universities, countries, years", 3),
     ("check", "recognition", "Foreign degree recognised in Germany (ZAB / anabin)?", ["Yes", "No", "In progress", "Not relevant"], ""),
     ("text", "usa", "Experience in the USA — years, cities, organisations, roles", 3),
@@ -55,6 +55,13 @@ QUESTIONS = [
     ("text", "numbers", "Numbers we may publish (years of practice, families supported, therapists supervised, trainings given)", 2),
     ("check", "title", "Do you hold an Approbation or Heilpraktiker (Psychotherapie) permission?", ["Yes", "No — then we avoid the word 'Therapie' for your own services ★"], ""),
     ("check", "insurance", "Berufshaftpflicht (professional liability insurance)?", ["Yes", "No", "Planned"], ""),
+    ("text", "current_role", "Your current role (e.g. supervisor: programme design, milestones, data systems, internal workshops) — how may we describe it without naming your employer?", 3),
+
+    ("section", "3b. Your approach: PFA & SBT (Dr. Gregory Hanley)", "Your work follows Practical Functional Assessment and Skill-Based Treatment — a strong, compassionate answer to ABA criticism."),
+    ("text", "ftf_level", "Your FTF / PFA-SBT training or certification: exact name, level, year (please copy the wording from your certificate)", 3),
+    ("check", "ftf_topics", "What you have done with PFA/SBT (tick all)", ["Implemented PFA / IISCA with clients", "Implemented SBT programmes", "Trained colleagues / gave workshops", "Supervised others in PFA/SBT", "Attended Dr. Hanley's seminars", "Other"], ""),
+    ("check", "hanley_name", "May we mention Dr. Hanley / FTF Behavioral Consulting by name on the website?", ["Yes, as the approach I follow (no endorsement implied) (recommended)", "Only the method names (PFA, SBT)", "No"], "We never use their logos or imply endorsement unless FTF allows it."),
+    ("check", "event_photo", "The event photo with Dr. Hanley and his colleague — may we use it?", ["Yes, both have given written consent", "I will ask them", "No, keep it private"], ""),
 
     ("section", "4. Languages & international profile", "Your 4 languages are a key differentiator."),
     ("note", "For each language, tick what you can offer professionally."),
@@ -102,6 +109,9 @@ QUESTIONS = [
     ("text", "bio_long", "Why you founded the company / your story (or bullet points — we'll write it)", 5),
     ("check", "testimonials", "Testimonials at launch", ["Professionals / institutions only ★", "Also anonymous parents (written consent)", "None"], ""),
     ("text", "links", "LinkedIn, publications, conferences, memberships, media", 3),
+    ("note", "Beyond the work — a personal section makes a premium practice feel human. Share only what you are comfortable with."),
+    ("check", "personal", "What may appear in a personal 'Beyond the work' section? (tick all)", ["My international path (Croatia – USA – Germany)", "My languages and what they mean to me", "That I am a mother (no photos of my children)", "Hobbies / what gives me energy", "Nothing personal"], ""),
+    ("text", "personal_text", "A few sentences about you as a person (any language)", 4),
     ("text", "donts", "Anything that must NOT appear on the website", 2),
 ]
 
