@@ -1,0 +1,42 @@
+---
+/** Rendert die Abschnitte einer Seite (gleiche Vorlage für DE, EN, HR, ES). */
+import type { Section } from '../../content/types';
+import Hero from './Hero.astro';
+import Answers from './Answers.astro';
+import List from './List.astro';
+import Cards from './Cards.astro';
+import Steps from './Steps.astro';
+import Programs from './Programs.astro';
+import PhotoSplit from './PhotoSplit.astro';
+import Team from './Team.astro';
+import Facts from './Facts.astro';
+import Note from './Note.astro';
+import Faq from './Faq.astro';
+import Cta from './Cta.astro';
+import Author from './Author.astro';
+import Related from './Related.astro';
+import Prose from './Prose.astro';
+import Commitments from './Commitments.astro';
+import Defs from './Defs.astro';
+interface Props { sections: Section[] }
+const { sections } = Astro.props;
+---
+{sections.map((s) => (
+  s.type === 'hero' ? <Hero s={s} /> :
+  s.type === 'answers' ? <Answers s={s} /> :
+  s.type === 'list' ? <List s={s} /> :
+  s.type === 'cards' ? <Cards s={s} /> :
+  s.type === 'steps' ? <Steps s={s} /> :
+  s.type === 'programs' ? <Programs s={s} /> :
+  s.type === 'photo' ? <PhotoSplit s={s} /> :
+  s.type === 'team' ? <Team s={s} /> :
+  s.type === 'facts' ? <Facts s={s} /> :
+  s.type === 'note' ? <Note s={s} /> :
+  s.type === 'faq' ? <Faq s={s} /> :
+  s.type === 'cta' ? <Cta s={s} /> :
+  s.type === 'author' ? <Author s={s} /> :
+  s.type === 'related' ? <Related s={s} /> :
+  s.type === 'prose' ? <Prose s={s} /> :
+  s.type === 'commitments' ? <Commitments s={s} /> :
+  s.type === 'defs' ? <Defs s={s} /> : null
+))}

@@ -1,0 +1,31 @@
+---
+/** Autorinnen-Box mit Qualifikation und Aktualisierungsdatum (Research §6: auf Themenseiten). */
+import type { AuthorS } from '../../content/types';
+import { content } from '../../content/index';
+import { site } from '../../content/site';
+import { localeFromPath, pathFor } from '../../i18n/routes';
+import R from '../R.astro';
+import Photo from '../Photo.astro';
+interface Props { s: AuthorS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const ui = content[locale].ui;
+const about = pathFor('about', locale);
+const fmt = new Intl.DateTimeFormat(ui.numberLocale, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(s.updated));
+---
+<aside class="section-note" aria-label={ui.author.label}>
+  <div class="wrap">
+    <div class="author-box">
+      <figure class="author-photo"><Photo name="studio" alt="" sizes="88px" /></figure>
+      <div>
+        <p class="small muted">{ui.author.label}</p>
+        <p class="author-name">{site.person.name}</p>
+        <p class="small"><R t={ui.author.role} /> · <R t={site.person.jobTitle} /></p>
+        <p class="small muted">
+          {ui.author.updated}: <time datetime={s.updated}>{fmt}</time>
+          {about && <span> · <a href={about}>{ui.author.link}</a></span>}
+        </p>
+      </div>
+    </div>
+  </div>
+</aside>

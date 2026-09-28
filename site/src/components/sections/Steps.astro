@@ -1,0 +1,20 @@
+---
+import type { StepsS } from '../../content/types';
+import R from '../R.astro';
+interface Props { s: StepsS }
+const { s } = Astro.props;
+---
+<section id={s.id} class="section bg-forest on-dark">
+  <div class="wrap split">
+    <div class="sec-head">
+      {s.eyebrow && <p class="eyebrow">{s.eyebrow}</p>}
+      {s.title && <h2 class="display-md"><R t={s.title} /></h2>}
+      {s.intro && <p class="lead"><R t={s.intro} /></p>}
+    </div>
+    <ol class="steps">
+      {s.steps.map((st, i) => (
+        <li><span class="num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><h3>{st.title}</h3><p><R t={st.text} /></p></li>
+      ))}
+    </ol>
+  </div>
+</section>

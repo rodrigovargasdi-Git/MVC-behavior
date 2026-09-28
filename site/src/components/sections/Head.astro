@@ -1,0 +1,13 @@
+---
+/** Abschnittskopf: Eyebrow, H2, Einleitung. */
+import R from '../R.astro';
+interface Props { id?: string; eyebrow?: string; title?: string; intro?: string; center?: boolean }
+const { id, eyebrow, title, intro, center } = Astro.props;
+---
+{(eyebrow || title || intro) && (
+  <div class:list={['sec-head', { 'sec-head-center': center }]}>
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    {title && <h2 id={id} class="display-md"><R t={title} /></h2>}
+    {intro && <p class="lead"><R t={intro} /></p>}
+  </div>
+)}

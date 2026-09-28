@@ -327,6 +327,19 @@ Answer each in 40–60 words, answer first, as a question-style H2 on the matchi
 - ¿Criar a un niño bilingüe con autismo retrasa el lenguaje?
 - ¿Qué es un analista de conducta certificado (BCBA)?
 
+### 4.6 Addendum (28.09.2026): PFA/SBT keywords (DE/EN)
+Method-gap terms (no competitor names them – see `2026-09-28-market-benchmark-matrix.md`). Use only in line with her confirmed FTF level (`2026-09-28-hanley-pfa-sbt-positioning.md` §7).
+
+| Keyword / cluster | Lang | Intent | Prio | Target page |
+|---|---|---|---|---|
+| practical functional assessment · skill based treatment · PFA SBT | DE/EN | I/C | **H** | /de/haltung/, /en/how-i-work/ |
+| IISCA · interview-informed synthesized contingency analysis | DE/EN | I (professionals) | M | /de/haltung/, /de/fachkraefte/ |
+| hanley aba training · skill based treatment dr hanley (as source, never as brand) | EN | I | M | /en/how-i-work/ |
+| mitfühlende / traumasensible / zustimmungsbasierte Verhaltensanalyse · compassionate, trauma-informed, assent-based behavior analysis | DE/EN | I | M | /de/haltung/, /en/how-i-work/ |
+| herausforderndes verhalten autismus PFA · challenging behavior PFA SBT | DE/EN | I/C | M | /de/familien/herausforderndes-verhalten/, /en/families/challenging-behavior/ |
+
+Note (Marija's questionnaire): the site now uses "Verhaltensanalyse / behavior analysis" instead of "ABA" in titles and headings; "aba therapie kritik" is answered in one FAQ entry only. Sleep and feeding topics are not offered.
+
 ---
 
 ## 5. Recommended multilingual site architecture

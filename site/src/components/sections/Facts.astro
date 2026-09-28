@@ -1,0 +1,15 @@
+---
+import type { FactsS } from '../../content/types';
+import R from '../R.astro';
+import Head from './Head.astro';
+interface Props { s: FactsS }
+const { s } = Astro.props;
+---
+<section id={s.id} class:list={['section-tight facts-band', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap">
+    <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+    <dl class="facts">
+      {s.items.map((i) => <div><dt>{i.label}</dt><dd><R t={i.value} /></dd></div>)}
+    </dl>
+  </div>
+</section>

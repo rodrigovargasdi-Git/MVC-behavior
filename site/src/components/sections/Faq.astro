@@ -1,0 +1,29 @@
+---
+import type { FaqS, FaqItem } from '../../content/types';
+import { content } from '../../content/index';
+import { localeFromPath, pathFor } from '../../i18n/routes';
+import Head from './Head.astro';
+import FaqList from '../FaqList.astro';
+import Icon from '../Icon.astro';
+interface Props { s: FaqS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const { ui, faq } = content[locale];
+const items = s.group
+  ? faq.filter((f) => f.group === s.group)
+  : (s.ids ?? []).map((id) => faq.find((f) => f.id === id)).filter((f): f is FaqItem => f !== undefined);
+const faqPath = pathFor('faq', locale);
+---
+{items.length > 0 && (
+  <section id={s.id} class:list={['section', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+    <div class="wrap split">
+      <div>
+        <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+        {s.more !== false && faqPath && Astro.url.pathname !== faqPath && (
+          <p style="margin-top:1rem;"><a class="link-arrow" href={faqPath}>{ui.faqMore} <Icon name="arrow" /></a></p>
+        )}
+      </div>
+      <FaqList items={items} />
+    </div>
+  </section>
+)}

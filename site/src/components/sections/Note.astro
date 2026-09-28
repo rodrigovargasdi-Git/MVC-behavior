@@ -1,0 +1,19 @@
+---
+import type { NoteS } from '../../content/types';
+import R from '../R.astro';
+import Icon from '../Icon.astro';
+interface Props { s: NoteS }
+const { s } = Astro.props;
+const tone = s.tone ?? 'info';
+---
+<section id={s.id} class:list={['section-note', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap">
+    <div class:list={['note', { 'note-strong': tone === 'warn', 'legal-warning': tone === 'internal' }]} role={tone === 'internal' ? 'note' : undefined}>
+      {tone !== 'internal' && <Icon name="shield" size={20} />}
+      <div class="stack">
+        {s.title && <p><strong><R t={s.title} /></strong></p>}
+        {s.body.map((p) => <p><R t={p} /></p>)}
+      </div>
+    </div>
+  </div>
+</section>

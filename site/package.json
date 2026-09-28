@@ -1,9 +1,9 @@
 {
   "name": "vargas-behavior-site",
   "private": true,
-  "version": "2.0.0",
+  "version": "3.0.0",
   "type": "module",
-  "description": "Static German website (Astro) for Marija Vargas' consultancy. Version 2.",
+  "description": "Static multilingual website (Astro; DE/EN/HR/ES) for Marija Vargas Behavior Consultancy. Version 3.",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

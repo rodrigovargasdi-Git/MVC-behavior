@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.0 — 2026-09-28 — multilingual premium site
+- **i18n:** routes `/de/ /en/ /hr/ /es/` (Astro i18n, `prefixDefaultLocale`), `/` → `/de/`, one route registry (`site/src/i18n/routes.ts`) driving pages, hreflang + x-default (EN), language switcher (equivalent page, else that language's home), breadcrumbs, per-language sitemaps, `<html lang>`, JSON-LD `inLanguage`/`knowsLanguage`, 4-language `llms.txt`, per-language OG images.
+- **Content:** DE and EN full (17 + 16 pages incl. legal; EN expat guide with glossary), HR (9) and ES (8) short versions built but hidden (`showHrEs: false` → noindex, no sitemap/hreflang/switcher) pending Marija's native review (`data-review="translation"`). Jugendamt page DE-only, noindex, unlinked.
+- **Questionnaire applied:** brand "Marija Vargas · Behavior Analysis & Consulting"; no prices (fees on request, free 15-min intro call as CTA); "Verhaltensanalyse/behavior analysis" instead of "ABA" (ABA only in one honest FAQ answer); confirmed credentials (IBA/IBAO, MA Child Studies Linköping 2020, BA Neuroscience Earlham, FTF PFA/SBT training since 2021, degree recognised in DE); ages 0–12; all 7 commitments; no sleep/feeding topics; no sister partner line for now; no BACB supervision hours.
+- **Approach:** PFA & SBT (Dr. Gregory Hanley and colleagues) in neutral wording, credential level as placeholder, no endorsement claims, no expired guidelines cited.
+- **Design:** new editorial section system (serif headings, ivory/forest/terracotta palette, arch portraits), sample photos via `astro:assets` (AVIF/WebP, lazy), footer note "Beispielbilder"; min. text contrast 5.19:1; checked at 375 px and 1366 px.
+- Removed v2 page files and helpers (`nav.ts`, `ph.ts`, `faq.ts`, old components).
+
 ## 2.0.0 — 2026-09-25 — static Astro rebuild
 - Rebuilt as a static German Astro site in `site/`, following the agent-team evaluation.
 - 13 pages: Start, Leistungen (+ Familien, Fachkräfte, Institutionen & Jugendämter), Fortbildung & Supervision, Über Marija, FAQ, Kontakt (+ Danke), Impressum, Datenschutz, 404.

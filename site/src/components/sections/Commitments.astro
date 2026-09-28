@@ -1,0 +1,28 @@
+---
+/** Haltungs-Zusagen (Evaluation §3.4 Nr. 2). Nur bestätigte Punkte veröffentlichen – Texte je Sprache in src/content/<sprache>/. */
+import type { CommitmentsS } from '../../content/types';
+import { content } from '../../content/index';
+import { site } from '../../content/site';
+import { localeFromPath } from '../../i18n/routes';
+import { resolveHref } from '../../lib/rich';
+import Head from './Head.astro';
+import R from '../R.astro';
+import Icon from '../Icon.astro';
+interface Props { s: CommitmentsS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const { commitments } = content[locale];
+---
+<section id={s.id} class:list={['section', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap split">
+    <div>
+      <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+      {s.link && <p style="margin-top:1rem;"><a class="link-arrow" href={resolveHref(s.link.href, locale)}>{s.link.label} <Icon name="arrow" /></a></p>}
+    </div>
+    <div>
+      <ul class="check-list">{commitments.map((c) => <li><span><R t={c} /></span></li>)}</ul>
+      {site.haltungNote && <p class="small" style="margin-top:1rem;"><R t={site.haltungNote} /></p>}
+      {s.after && <p class="small muted" style="margin-top:1rem;"><R t={s.after} /></p>}
+    </div>
+  </div>
+</section>

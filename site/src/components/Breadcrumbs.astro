@@ -1,12 +1,13 @@
 ---
-interface Props { items: { name: string; href: string }[] }
-const { items } = Astro.props;
+import { plain } from '../lib/rich';
+interface Props { items: { name: string; href: string }[]; label: string }
+const { items, label } = Astro.props;
 ---
-<nav class="breadcrumbs wrap" aria-label="Brotkrumen">
+<nav class="breadcrumbs wrap" aria-label={label}>
   <ol>
     {items.map((it, i) => (
       <li>
-        {i < items.length - 1 ? <a href={it.href}>{it.name}</a> : <span aria-current="page">{it.name}</span>}
+        {i < items.length - 1 ? <a href={it.href}>{plain(it.name)}</a> : <span aria-current="page">{plain(it.name)}</span>}
       </li>
     ))}
   </ol>

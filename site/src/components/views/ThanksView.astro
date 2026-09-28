@@ -1,0 +1,19 @@
+---
+/** Ziel der Weiterleitung durch den Formular-Endpunkt nach erfolgreichem Versand (ohne JavaScript). */
+import R from '../R.astro';
+import Icon from '../Icon.astro';
+import { content } from '../../content/index';
+import { pathFor, type Locale } from '../../i18n/routes';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = content[locale].contact.thanks;
+---
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">{content[locale].contact.eyebrow}</p>
+    <h1 class="display-lg"><R t={t.h1} /></h1>
+    <p class="lead hero-lead"><R t={t.lead} /></p>
+    <p class="muted" style="margin-top:1rem;">{t.spam}</p>
+    <p style="margin-top:1.5rem;"><a class="link-arrow" href={pathFor('home', locale)}>{t.back} <Icon name="arrow" /></a></p>
+  </div>
+</section>

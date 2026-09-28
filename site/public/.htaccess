@@ -1,0 +1,4 @@
+# Apache (z. B. IONOS, All-Inkl, Hetzner Webhosting). Andere Hosts ignorieren diese Datei –
+# dort „/“ → „/de/“ (301) und die 404-Seite in der Host-Konfiguration einrichten (siehe site/README.md).
+RedirectMatch 301 ^/$ /de/
+ErrorDocument 404 /404.html

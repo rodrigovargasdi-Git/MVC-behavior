@@ -1,0 +1,130 @@
+---
+/**
+ * Impressum nach § 5 DDG. DE = verbindliche Fassung, EN/HR/ES = Übersetzungen („courtesy translation“).
+ * Vorlage mit Platzhaltern aus site.ts → legal. Vor Veröffentlichung rechtlich prüfen lassen.
+ */
+import R from '../R.astro';
+import { site, confirmed } from '../../content/site';
+import { pathFor, type Locale } from '../../i18n/routes';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const l = site.legal;
+const email = confirmed(site.contact.email);
+const phone = confirmed(site.contact.phone);
+const de = pathFor('imprint', 'de');
+const tel = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : undefined;
+---
+<section class="section-tight">
+  <div class="wrap"><div class="prose">
+    {locale === 'de' && (
+      <>
+        <h1 class="display-lg">Impressum</h1>
+        <p class="legal-warning" role="note">Entwurf – vor Veröffentlichung rechtlich prüfen lassen. Alle markierten Angaben ergänzen oder nicht zutreffende Abschnitte löschen.</p>
+
+        <h2>Angaben gemäß § 5 DDG</h2>
+        <p><R t={l.ownerName} /><br />{site.brand.name}<br /><R t={l.street} /><br /><R t={l.postalCity} /><br />{l.country}</p>
+        <p>Rechtsform: <R t={l.legalForm} /></p>
+
+        <h2>Kontakt</h2>
+        <p>
+          E-Mail: {email ? <a href={`mailto:${email}`}>{email}</a> : <R t={site.contact.email} />}<br />
+          Telefon: {tel ? <a href={tel}>{phone}</a> : <R t={site.contact.phone} />}
+        </p>
+
+        <h2>Umsatzsteuer-Identifikationsnummer</h2>
+        <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: <R t={l.vatId} /></p>
+
+        <h2>Berufsbezeichnung und berufsrechtliche Regelungen</h2>
+        <p>Berufsbezeichnung: <R t={l.professionalTitle} /></p>
+        <p>Zuständige Aufsichtsbehörde / Kammer: <R t={l.supervisoryAuthority} /></p>
+
+        <h2>Berufshaftpflichtversicherung</h2>
+        <p><R t={l.liabilityInsurance} /></p>
+
+        <h2>Verbraucherstreitbeilegung</h2>
+        <p>Ich bin nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen. <R t={l.vsbgNote} /></p>
+
+        <h2>Haftung für Links</h2>
+        <p>Diese Website enthält Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich. Bei Bekanntwerden von Rechtsverletzungen entferne ich derartige Links umgehend.</p>
+
+        <h2>Hinweis zum Angebot</h2>
+        <p>Das Angebot umfasst verhaltensanalytische Beratung, Coaching, Supervision und Fortbildung. Es ersetzt keine ärztliche oder psychologische Diagnostik, keine Psychotherapie und keine Notfallversorgung.</p>
+
+        <h2>Sprachfassungen</h2>
+        <p>Diese Website ist auf Deutsch, Englisch, Kroatisch und Spanisch verfügbar. Rechtlich maßgeblich ist die deutsche Fassung dieses Impressums und der Datenschutzerklärung.</p>
+      </>
+    )}
+
+    {locale === 'en' && (
+      <>
+        <h1 class="display-lg">Legal notice</h1>
+        <p class="legal-warning" role="note">Draft – courtesy translation of the German <a href={de} lang="de">Impressum</a>, which is the legally binding version. <R t={l.translationNote} /></p>
+
+        <h2>Information pursuant to § 5 DDG (German Digital Services Act)</h2>
+        <p><R t={l.ownerName} /><br />{site.brand.name}<br /><R t={l.street} /><br /><R t={l.postalCity} /><br />Germany</p>
+        <p>Legal form: <R t={l.legalForm} /></p>
+
+        <h2>Contact</h2>
+        <p>
+          Email: {email ? <a href={`mailto:${email}`}>{email}</a> : <R t={site.contact.email} />}<br />
+          Phone: {tel ? <a href={tel}>{phone}</a> : <R t={site.contact.phone} />}
+        </p>
+
+        <h2>VAT identification number</h2>
+        <p>VAT ID pursuant to § 27a of the German VAT Act: <R t={l.vatId} /></p>
+
+        <h2>Professional title and regulations</h2>
+        <p>Professional title: <R t={l.professionalTitle} /></p>
+        <p>Supervisory authority / chamber: <R t={l.supervisoryAuthority} /></p>
+
+        <h2>Professional liability insurance</h2>
+        <p><R t={l.liabilityInsurance} /></p>
+
+        <h2>Consumer dispute resolution</h2>
+        <p>I am neither willing nor obliged to take part in dispute resolution proceedings before a consumer arbitration board. <R t={l.vsbgNote} /></p>
+
+        <h2>Liability for links</h2>
+        <p>This website contains links to external third-party websites whose content I cannot influence. The respective provider or operator is always responsible for the content of linked pages. I will remove such links promptly if I become aware of any legal violations.</p>
+
+        <h2>About the services</h2>
+        <p>The services comprise behavior-analytic consultation, coaching, supervision and training. They do not replace medical or psychological diagnosis, psychotherapy or emergency care.</p>
+      </>
+    )}
+    {locale === 'hr' && (
+      <>
+        <h1 class="display-lg">Impresum</h1>
+        <p class="legal-warning" role="note">Prijevod radi lakšeg razumijevanja – pravno je obvezujući njemački <a href={de} lang="de">Impressum</a>. <R t={l.translationNote} /></p>
+        <h2>Podaci prema § 5 DDG (njemački Zakon o digitalnim uslugama)</h2>
+        <p><R t={l.ownerName} /><br />{site.brand.name}<br /><R t={l.street} /><br /><R t={l.postalCity} /><br />Njemačka</p>
+        <p>Pravni oblik: <R t={l.legalForm} /></p>
+        <h2>Kontakt</h2>
+        <p>
+          E-pošta: {email ? <a href={`mailto:${email}`}>{email}</a> : <R t={site.contact.email} />}<br />
+          Telefon: {tel ? <a href={tel}>{phone}</a> : <R t={site.contact.phone} />}
+        </p>
+        <h2>Napomena o ponudi</h2>
+        <p>Ponuda obuhvaća savjetovanje, coaching, superviziju i edukaciju iz analize ponašanja. Ne zamjenjuje liječničku ni psihološku dijagnostiku, psihoterapiju ni hitnu pomoć.</p>
+        <p>Ostali podaci (PDV identifikacijski broj, osiguranje od profesionalne odgovornosti, rješavanje potrošačkih sporova) nalaze se u njemačkoj verziji.</p>
+      </>
+    )}
+
+    {locale === 'es' && (
+      <>
+        <h1 class="display-lg">Aviso legal</h1>
+        <p class="legal-warning" role="note">Traducción de cortesía – la versión vinculante es el <a href={de} lang="de">Impressum</a> en alemán. <R t={l.translationNote} /></p>
+        <h2>Información según el § 5 DDG (ley alemana de servicios digitales)</h2>
+        <p><R t={l.ownerName} /><br />{site.brand.name}<br /><R t={l.street} /><br /><R t={l.postalCity} /><br />Alemania</p>
+        <p>Forma jurídica: <R t={l.legalForm} /></p>
+        <h2>Contacto</h2>
+        <p>
+          Correo electrónico: {email ? <a href={`mailto:${email}`}>{email}</a> : <R t={site.contact.email} />}<br />
+          Teléfono: {tel ? <a href={tel}>{phone}</a> : <R t={site.contact.phone} />}
+        </p>
+        <h2>Sobre los servicios</h2>
+        <p>Los servicios incluyen asesoría, coaching, supervisión y formación en análisis de conducta. No sustituyen un diagnóstico médico o psicológico, la psicoterapia ni la atención de urgencias.</p>
+        <p>El resto de datos (NIF-IVA, seguro de responsabilidad profesional, resolución de litigios de consumo) figura en la versión alemana.</p>
+      </>
+    )}
+  </div></div>
+</section>

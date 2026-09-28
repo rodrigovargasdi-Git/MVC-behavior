@@ -1,0 +1,21 @@
+---
+import type { ProseS } from '../../content/types';
+import Head from './Head.astro';
+import Icon from '../Icon.astro';
+import { localeFromPath } from '../../i18n/routes';
+import { resolveHref } from '../../lib/rich';
+import R from '../R.astro';
+interface Props { s: ProseS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+---
+<section id={s.id} class:list={['section-tight', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap split">
+    <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+    <div class="stack measure">
+      {s.body.filter((p) => p.trim()).map((p) => <p><R t={p} /></p>)}
+      {s.list && <ul class="check-list">{s.list.map((l) => <li><span><R t={l} /></span></li>)}</ul>}
+      {s.links && <p class="after-links">{s.links.map((l) => <a class="link-arrow" href={resolveHref(l.href, locale)}>{l.label} <Icon name="arrow" /></a>)}</p>}
+    </div>
+  </div>
+</section>

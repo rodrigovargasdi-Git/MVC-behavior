@@ -1,0 +1,28 @@
+---
+import type { TeamS } from '../../content/types';
+import { content } from '../../content/index';
+import { localeFromPath } from '../../i18n/routes';
+import Head from './Head.astro';
+import R from '../R.astro';
+import Photo from '../Photo.astro';
+interface Props { s: TeamS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const ui = content[locale].ui;
+---
+<section id={s.id} class:list={['section', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap">
+    <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+    <figure class="team-photo"><Photo name={s.photo} alt={ui.photoAlt[s.photo]} sizes="(min-width: 1240px) 1180px, 94vw" /></figure>
+    <div class="team-grid">
+      {s.people.map((p) => (
+        <div class="team-person">
+          <h3 class="display-sm"><R t={p.name} /></h3>
+          <p class="team-role"><R t={p.role} /></p>
+          <div class="stack">{p.text.map((t) => <p class="muted"><R t={t} /></p>)}</div>
+        </div>
+      ))}
+    </div>
+    {s.note && <p class="note" style="margin-top:2rem;"><span><R t={s.note} /></span></p>}
+  </div>
+</section>

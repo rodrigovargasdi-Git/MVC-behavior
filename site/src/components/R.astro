@@ -1,0 +1,8 @@
+---
+/** Rendert Inhaltstext mit Mini-Auszeichnung (siehe src/lib/rich.ts) in der Sprache der aktuellen Seite. */
+import { rich } from '../lib/rich';
+import { localeFromPath } from '../i18n/routes';
+interface Props { t: string }
+const html = rich(Astro.props.t ?? '', localeFromPath(Astro.url.pathname));
+---
+<Fragment set:html={html} />

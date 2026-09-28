@@ -1,0 +1,30 @@
+---
+/** Responsives Foto über astro:assets: AVIF/WebP + JPG-Fallback, feste Maße (kein CLS), lazy außer im Hero. */
+import { Picture } from 'astro:assets';
+import { photos } from '../lib/photos';
+import type { PhotoKey } from '../content/types';
+
+interface Props {
+  name: PhotoKey;
+  alt: string;
+  sizes: string;
+  eager?: boolean;
+  class?: string;
+}
+const { name, alt, sizes, eager = false, class: cls } = Astro.props;
+const img = photos[name];
+const widths = [320, 480, 640, 800, 960, 1200].filter((w) => w < img.width);
+widths.push(img.width);
+---
+<Picture
+  src={img}
+  widths={widths}
+  sizes={sizes}
+  formats={['avif', 'webp']}
+  fallbackFormat="jpg"
+  alt={alt}
+  loading={eager ? 'eager' : 'lazy'}
+  decoding={eager ? 'sync' : 'async'}
+  fetchpriority={eager ? 'high' : undefined}
+  class={cls}
+/>

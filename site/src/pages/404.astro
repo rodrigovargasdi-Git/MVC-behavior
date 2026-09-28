@@ -1,19 +1,28 @@
 ---
+/** Eine 404-Seite für alle Sprachen (Server: ErrorDocument 404 /404.html). */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { mainNav, leistungen } from '../lib/nav';
+import { activeLocales as locales, localeMeta, pathFor } from '../i18n/routes';
+
+const lines = {
+  de: 'Diese Seite gibt es nicht (mehr).',
+  en: 'This page does not exist (any more).',
+  hr: 'Ova stranica ne postoji.',
+  es: 'Esta página no existe.',
+} as const;
 ---
-<BaseLayout title="Seite nicht gefunden" description="Diese Seite gibt es nicht (mehr). Hier geht es weiter." noindex>
-  <PageHero eyebrow="Fehler 404" blob="lavender" lead="Diese Seite gibt es nicht oder nicht mehr. Vielleicht hilft einer dieser Wege weiter.">
-    Hier geht es <em>nicht weiter.</em>
-  </PageHero>
-  <section class="section-tight">
+<BaseLayout title="Seite nicht gefunden · Page not found" description="Diese Seite gibt es nicht. This page does not exist." locale="de" noindex>
+  <section class="hero">
     <div class="wrap">
-      <ul class="rule-list measure">
-        <li><a class="link-arrow" href="/">Startseite <Icon name="arrow" /></a></li>
-        {leistungen.map((l) => <li><a class="link-arrow" href={l.href}>{l.long} <Icon name="arrow" /></a></li>)}
-        {mainNav.filter((i) => i.href !== '/leistungen/').map((i) => <li><a class="link-arrow" href={i.href}>{i.label} <Icon name="arrow" /></a></li>)}
+      <p class="eyebrow">404</p>
+      <h1 class="display-lg">Hier geht es <em>nicht weiter.</em></h1>
+      <ul class="rule-list measure" style="margin-top:2.5rem;">
+        {locales.map((l) => (
+          <li lang={localeMeta[l].bcp47}>
+            <p class="muted small">{lines[l]}</p>
+            <a class="link-arrow" href={pathFor('home', l)}>{localeMeta[l].label} <Icon name="arrow" /></a>
+          </li>
+        ))}
       </ul>
     </div>
   </section>

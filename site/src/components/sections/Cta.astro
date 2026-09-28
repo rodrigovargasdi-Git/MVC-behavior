@@ -1,0 +1,26 @@
+---
+import type { CtaS } from '../../content/types';
+import { content } from '../../content/index';
+import { localeFromPath } from '../../i18n/routes';
+import { ctaHref } from '../../lib/cta';
+import { resolveHref } from '../../lib/rich';
+import R from '../R.astro';
+import Icon from '../Icon.astro';
+interface Props { s: CtaS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const ui = content[locale].ui;
+---
+<section class="section-tight bg-forest on-dark cta-section">
+  <div class="wrap cta-band">
+    <div>
+      {s.eyebrow && <p class="eyebrow">{s.eyebrow}</p>}
+      <h2 class="display-md"><R t={s.title} /></h2>
+      {s.text && <p class="lead cta-text"><R t={s.text} /></p>}
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-primary" href={ctaHref(s.primary, locale)}>{ui.cta[s.primary]} <Icon name="arrow" /></a>
+      {s.secondary && <a class="link-arrow" href={resolveHref(s.secondary.href, locale)}>{s.secondary.label}</a>}
+    </div>
+  </div>
+</section>

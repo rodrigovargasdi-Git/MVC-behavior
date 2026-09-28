@@ -1,0 +1,59 @@
+---
+/**
+ * Sprachumschalter DE · EN · HR · ES: verlinkt die gleichwertige Seite,
+ * sonst die Startseite der jeweiligen Sprache (Research §5.1).
+ */
+import { content } from '../content/index';
+import { locales, isActiveLocale, localeMeta, pathFor, type Locale, type PageKey } from '../i18n/routes';
+
+interface Props { locale: Locale; routeKey?: PageKey; class?: string }
+const { locale, routeKey, class: cls } = Astro.props;
+const ui = content[locale].ui;
+const items = locales.filter((l) => isActiveLocale(l) || l === locale).map((l) => {
+  const target = routeKey ? pathFor(routeKey, l) : undefined;
+  return {
+    l,
+    href: target ?? pathFor('home', l) ?? `/${l}/`,
+    fallback: !target && l !== locale,
+    meta: localeMeta[l],
+    hint: content[l].ui.langHomeHint,
+  };
+});
+---
+<nav class:list={['lang-switch', cls]} aria-label={ui.langLabel}>
+  <ul>
+    {items.map((i) => (
+      <li>
+        <a
+          href={i.href}
+          lang={i.meta.bcp47}
+          hreflang={i.meta.bcp47}
+          aria-current={i.l === locale ? 'true' : undefined}
+        >
+          <span aria-hidden="true">{i.meta.short}</span>
+          <span class="visually-hidden">{i.meta.label}{i.fallback ? ` (${i.hint})` : ''}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .lang-switch ul { display: flex; gap: 0.15rem; list-style: none; margin: 0; padding: 0; }
+  .lang-switch a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0 0.45rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  .lang-switch a:hover { color: var(--ink); background: rgb(24 59 48 / 0.06); }
+  .lang-switch a[aria-current='true'] { color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--forest); }
+</style>

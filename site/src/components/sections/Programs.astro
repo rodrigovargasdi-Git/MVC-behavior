@@ -1,0 +1,57 @@
+---
+/** Programm-Karten: für wen, enthalten, Dauer, Format, „ab“-Preis, CTA (Research §7.3). */
+import type { ProgramsS } from '../../content/types';
+import { content } from '../../content/index';
+import { site } from '../../content/site';
+import { localeFromPath } from '../../i18n/routes';
+import { ctaHref } from '../../lib/cta';
+import { priceText, formatPrice } from '../../lib/price';
+import { resolveHref } from '../../lib/rich';
+import Head from './Head.astro';
+import R from '../R.astro';
+import Icon from '../Icon.astro';
+interface Props { s: ProgramsS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const { ui, programs } = content[locale];
+const list = s.programs.map((k) => ({ key: k, p: programs[k] })).filter((x) => x.p);
+---
+<section id={s.id} class:list={['section', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap">
+    <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+    <ul class:list={['program-grid', { 'program-grid-single': list.length === 1 }]}>
+      {list.map(({ key, p }) => (
+        <li class:list={['program', { 'program-flagship': p!.flagship }]} id={`programm-${key}`}>
+          <div class="program-top">
+            {p!.flagship && <p class="program-flag">{ui.programs.flagship}</p>}
+            <h3 class="display-sm">{p!.name}</h3>
+            <p class="program-for"><span class="visually-hidden">{ui.programs.for}: </span><R t={p!.for} /></p>
+          </div>
+          {!s.compact && (
+            <div class="program-includes">
+              <p class="program-label">{ui.programs.includes}</p>
+              <ul class="check-list">{p!.includes.filter((i) => i.trim()).map((i) => <li><span><R t={i} /></span></li>)}</ul>
+            </div>
+          )}
+          <dl class="program-meta">
+            <div><dt>{ui.programs.duration}</dt><dd>{p!.duration}</dd></div>
+            <div><dt>{ui.programs.format}</dt><dd>{p!.format}</dd></div>
+            <div class="program-price">
+              <dt>{ui.programs.price}</dt>
+              <dd>
+                <span class="price-value"><R t={priceText(p!.price, ui)} /></span>
+                {p!.price2 && site.prices.show && <span class="price-2">{p!.price2.label}: <R t={formatPrice(p!.price2.key, ui)} /></span>}
+              </dd>
+            </div>
+          </dl>
+          <div class="program-actions">
+            <a class="btn btn-primary" href={ctaHref(p!.cta, locale)}>{ui.cta[p!.cta]} <Icon name="arrow" /></a>
+            {p!.more && <a class="link-arrow" href={resolveHref(p!.more.href, locale)}>{p!.more.label} <Icon name="arrow" /></a>}
+          </div>
+        </li>
+      ))}
+    </ul>
+    {s.note && <p class="small muted program-note"><R t={s.note} /></p>}
+    {!s.compact && site.prices.show && <p class="small program-note"><R t={site.prices.vatNote} /></p>}
+  </div>
+</section>

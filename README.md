@@ -1,18 +1,20 @@
 # Marija Vargas — Behavior Consultancy website
 
-Website for Marija Vargas's consultancy (working brand: **Vargas Human Behavior**). She is a senior human-behaviour / ABA consultant for families, professionals, institutions and Jugendämter in Germany.
+Website for Marija Vargas's consultancy (brand: **Marija Vargas · Behavior Analysis & Consulting**). She is an International Behavior Analyst (IBA) working with PFA & SBT, for families, professionals, schools and institutions, in DE, EN, HR (and ES).
 
 | Path | What |
 |---|---|
-| [`site/`](site/README.md) | **v2**: static German Astro site (13 pages). This is the live code. |
+| [`site/`](site/README.md) | **v3**: static multilingual Astro site (DE + EN public, HR + ES built but hidden). This is the live code. |
 | [`docs/2026-09-25-website-evaluation.md`](docs/2026-09-25-website-evaluation.md) | Agent-team evaluation of v1: findings, stack decision, draft brief, **questions for Marija (§5.8)** |
 | [`docs/2026-08-replit-prompt-history.md`](docs/2026-08-replit-prompt-history.md) | How v1 was created in Replit + Replit's launch checklist |
 | tag `v0.1-replit-draft` | v1 (Replit React monorepo), archived. Restore with `git checkout v0.1-replit-draft` |
 
-## Status (2026-09-25)
-- ✅ v2 built: no cookies, no third-party requests, self-hosted fonts, legal page templates, AA contrast, JSON-LD, sitemap, `llms.txt`.
-- ⏳ **Waiting on Marija:** about 50 `[[BITTE BESTÄTIGEN]]` facts in `site/src/content/site.ts` (name, credentials, contact, region, prices, Impressum/Datenschutz data, ABA commitments). The questions are in the evaluation §5.8.
-- ⏳ Decisions: domain (.de), EU static host, form backend (PHP mailer on the host or an EU form service), legal review of Impressum/Datenschutz.
+## Status (2026-09-28)
+- ✅ **v3.0.0**: multilingual (DE + EN public; HR + ES built, hidden until Marija's review), premium positioning, PFA/SBT approach, Marija's answers applied (`docs/decisions.md`), 55 pages, no cookies, no third-party requests.
+- ⛔ **Launch blocker:** written approval of the side activity from her current employer (D4).
+- ⏳ **Waiting on Marija:** the conversation in `docs/questionnaire/conversation-guide.md` (her story, her approach in her own words, region, FTF level) → fills the remaining `[[BITTE BESTÄTIGEN]]` placeholders.
+- ⏳ **Waiting on Rodrigo:** Steuerberater (legal form, Kleinunternehmer), liability insurance, name + domain, Impressum data, EU host + form endpoint, real photo shoot.
+- 📚 Research: competitors + keywords, market matrix (21 providers, demand), directories & listing plan, Hanley PFA/SBT positioning (all in `docs/`).
 
 ## Run
 ```bash

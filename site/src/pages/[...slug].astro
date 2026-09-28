@@ -1,0 +1,54 @@
+---
+/**
+ * Baut jede Seite aus dem Routen-Register (src/i18n/routes.ts) in jeder Sprache.
+ * Inhalte: src/content/<sprache>/. Vorlagen: src/components/sections/ (Abschnitte) und
+ * src/components/views/ (Kontakt, Danke, Impressum, Datenschutz).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sections from '../components/sections/Sections.astro';
+import ContactView from '../components/views/ContactView.astro';
+import ThanksView from '../components/views/ThanksView.astro';
+import ImprintView from '../components/views/ImprintView.astro';
+import PrivacyView from '../components/views/PrivacyView.astro';
+import { allPages, type PageEntry } from '../i18n/routes';
+import { content } from '../content/index';
+import { serviceLd, faqLd } from '../lib/jsonld';
+import { hasPlaceholder } from '../lib/rich';
+import type { FaqItem } from '../content/types';
+
+export function getStaticPaths() {
+  return allPages()
+    .filter((p) => !p.file)
+    .map((p) => ({ params: { slug: p.path.replace(/^\/|\/$/g, '') }, props: p }));
+}
+
+const { key, locale, view } = Astro.props as PageEntry;
+const c = content[locale];
+const page = c.pages[key];
+if (!page) throw new Error(`Inhalt fehlt für ${locale}/${key} (src/content/${locale}/)`);
+
+const siteUrl = Astro.site!;
+const url = new URL(Astro.url.pathname, siteUrl).href;
+const jsonLd: object[] = [];
+if (page.service) jsonLd.push(serviceLd(siteUrl, locale, url, page.service));
+
+// FAQPage nur mit vollständig bestätigten Antworten (keine Platzhalter in strukturierten Daten).
+const qa: { q: string; a: string }[] = [];
+for (const s of page.sections) {
+  if (s.type === 'faq') {
+    (s.group ? c.faq.filter((f) => f.group === s.group) : (s.ids ?? []).map((id) => c.faq.find((f) => f.id === id)))
+      .filter((f): f is FaqItem => Boolean(f))
+      .forEach((f) => qa.push({ q: f.q, a: f.a.join(' ') }));
+  }
+  if (s.type === 'answers') s.items.forEach((i) => qa.push({ q: i.q, a: [...i.a, ...(i.list ?? [])].join(' ') }));
+}
+const confirmedQa = qa.filter((x) => !hasPlaceholder(x.a) && !hasPlaceholder(x.q));
+if (confirmedQa.length) jsonLd.push(faqLd(confirmedQa));
+---
+<BaseLayout title={page.title} description={page.description} locale={locale} routeKey={key} jsonLd={jsonLd} ogType={page.ogType}>
+  {view === 'sections' && <Sections sections={page.sections} />}
+  {view === 'contact' && <ContactView locale={locale} />}
+  {view === 'thanks' && <ThanksView locale={locale} />}
+  {view === 'imprint' && <ImprintView locale={locale} />}
+  {view === 'privacy' && <PrivacyView locale={locale} />}
+</BaseLayout>

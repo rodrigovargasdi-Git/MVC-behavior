@@ -1,0 +1,32 @@
+---
+import type { CardsS } from '../../content/types';
+import { localeFromPath } from '../../i18n/routes';
+import { resolveHref } from '../../lib/rich';
+import Head from './Head.astro';
+import R from '../R.astro';
+import Icon from '../Icon.astro';
+interface Props { s: CardsS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const cols = s.cols ?? 3;
+---
+<section id={s.id} class:list={['section', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap">
+    <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+    <ul class:list={['card-grid', `cols-${cols}`]}>
+      {s.cards.map((c) => (
+        <li class:list={['card', c.tone && c.tone !== 'none' && `bg-${c.tone}`]}>
+          <div class="card-link">
+            {c.label && <p class="eyebrow">{c.label}</p>}
+            <h3 class="display-sm"><R t={c.title} /></h3>
+            <p class="muted"><R t={c.text} /></p>
+            {c.link && <a class="link-arrow" href={resolveHref(c.link.href, locale)}>{c.link.label} <Icon name="arrow" /></a>}
+          </div>
+        </li>
+      ))}
+    </ul>
+    {s.after && (
+      <p class="after-links">{s.after.map((l) => <a class="link-arrow" href={resolveHref(l.href, locale)}>{l.label} <Icon name="arrow" /></a>)}</p>
+    )}
+  </div>
+</section>

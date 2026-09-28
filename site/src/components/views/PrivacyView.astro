@@ -1,0 +1,147 @@
+---
+/**
+ * Datenschutzerklärung nach Art. 13 DSGVO. DE = verbindliche Fassung, EN = Übersetzung.
+ * Grundlage: statische Website ohne Cookies, ohne Tracking, ohne eingebettete Drittinhalte,
+ * Schriften und Bilder vom eigenen Server. Jede Änderung (Analyse, Buchungs-Widget, Karten, Videos)
+ * erfordert eine Anpassung. Vor Veröffentlichung rechtlich prüfen lassen.
+ */
+import R from '../R.astro';
+import { site, confirmed } from '../../content/site';
+import { pathFor, type Locale } from '../../i18n/routes';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const l = site.legal;
+const email = confirmed(site.contact.email);
+const de = pathFor('privacy', 'de');
+---
+<section class="section-tight">
+  <div class="wrap"><div class="prose">
+    {locale === 'de' && (
+      <>
+        <h1 class="display-lg">Datenschutz&shy;erklärung</h1>
+        <p class="legal-warning" role="note">Entwurf – vor Veröffentlichung rechtlich prüfen lassen. Alle markierten Angaben ergänzen; bei jeder Änderung an Hosting, Formular oder eingebundenen Diensten anpassen.</p>
+
+        <h2>1. Verantwortliche Stelle</h2>
+        <p><R t={l.ownerName} /><br /><R t={l.street} /><br /><R t={l.postalCity} /><br />E-Mail: {email ? <a href={`mailto:${email}`}>{email}</a> : <R t={site.contact.email} />}</p>
+        <p>Eine Datenschutzbeauftragte bzw. ein Datenschutzbeauftragter ist nicht benannt, da hierzu keine gesetzliche Pflicht besteht. <R t={l.dpoNote} /></p>
+
+        <h2>2. Das Wichtigste in Kürze</h2>
+        <ul>
+          <li>Diese Website setzt <strong>keine Cookies</strong> und verwendet <strong>kein Tracking</strong> und keine Analyse-Tools.</li>
+          <li>Es werden <strong>keine Inhalte von Drittanbietern</strong> geladen (keine Google Fonts, keine Karten, keine Videos, keine Social-Media-Plugins). Schriften und Bilder werden vom eigenen Server ausgeliefert.</li>
+          <li>Personenbezogene Daten verarbeite ich nur, wenn Sie mich kontaktieren, und nur zur Bearbeitung Ihrer Anfrage.</li>
+        </ul>
+
+        <h2>3. Hosting und Server-Logfiles</h2>
+        <p>Diese Website wird gehostet bei: <R t={l.host} /></p>
+        <p>Beim Aufruf der Website verarbeitet der Hosting-Anbieter technisch notwendige Daten in sogenannten Server-Logfiles: IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seite, übertragene Datenmenge, Referrer-URL, Browser und Betriebssystem.</p>
+        <p><strong>Zweck:</strong> sichere und stabile Bereitstellung der Website, Abwehr von Angriffen. <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren Betrieb). <strong>Speicherdauer:</strong> <R t={l.hostLogRetention} />. Mit dem Hosting-Anbieter besteht ein Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO.</p>
+
+        <h2>4. Kontaktaufnahme (Formular, E-Mail, Telefon)</h2>
+        <p>Wenn Sie mich über das Kontaktformular, per E-Mail oder telefonisch kontaktieren, verarbeite ich die Angaben, die Sie machen: im Formular Name, E-Mail-Adresse, Ihre Rolle (z. B. Elternteil, Fachkraft, Organisation), Ihre bevorzugte Sprache, optional Ort/Region und eine kurze Nachricht. Technisch wird außerdem die Sprachfassung der Seite übermittelt, von der Sie die Anfrage senden.</p>
+        <p><strong>Zweck:</strong> Bearbeitung Ihrer Anfrage und Anbahnung einer möglichen Zusammenarbeit. <strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) sowie Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung allgemeiner Anfragen).</p>
+        <p><strong>Bitte keine Gesundheitsdaten:</strong> Das Formular fragt bewusst keine Diagnosen, Befunde oder Angaben zum Verhalten oder zur Gesundheit Ihres Kindes ab. Bitte senden Sie solche Angaben nicht über das Formular oder per unverschlüsselter E-Mail; wir besprechen sie im persönlichen Gespräch. <R t={l.healthDataNote} /></p>
+        <p><strong>Empfänger:</strong> Formularverarbeitung: <R t={l.formProcessor} />. E-Mail-Postfach: <R t={l.mailProvider} />. Mit diesen Dienstleistern besteht jeweils ein Vertrag zur Auftragsverarbeitung. Eine Übermittlung in Länder außerhalb der EU/des EWR findet nicht statt.</p>
+        <p><strong>Speicherdauer:</strong> Anfragen, aus denen keine Zusammenarbeit entsteht, lösche ich nach <R t={l.inquiryRetention} />. Kommt eine Zusammenarbeit zustande, gelten die gesetzlichen Aufbewahrungsfristen (z. B. handels- und steuerrechtlich).</p>
+        <p>Die Übertragung der Website und des Formulars erfolgt verschlüsselt (TLS/HTTPS).</p>
+
+        <h2>5. Externe Links</h2>
+        <p>Diese Website enthält Links zu anderen Websites (z. B. öffentlichen Registern zur Prüfung von Qualifikationen oder einem Terminbuchungsdienst). Daten werden an diese Anbieter erst übertragen, wenn Sie den Link anklicken. Für die dortige Verarbeitung gelten die Datenschutzhinweise des jeweiligen Anbieters.</p>
+
+        <h2>6. Cookies und Endgerätezugriff</h2>
+        <p>Diese Website speichert keine Informationen auf Ihrem Endgerät und liest keine aus (keine Cookies, kein Local Storage, keine Tracking-Pixel). Eine Einwilligung nach § 25 TDDDG ist daher nicht erforderlich, und es gibt kein Cookie-Banner.</p>
+
+        <h2>7. Ihre Rechte</h2>
+        <p>Sie haben das Recht auf</p>
+        <ul>
+          <li>Auskunft über Ihre gespeicherten Daten (Art. 15 DSGVO),</li>
+          <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO),</li>
+          <li>Löschung (Art. 17 DSGVO) und Einschränkung der Verarbeitung (Art. 18 DSGVO),</li>
+          <li>Datenübertragbarkeit (Art. 20 DSGVO),</li>
+          <li><strong>Widerspruch</strong> gegen Verarbeitungen, die auf Art. 6 Abs. 1 lit. f DSGVO beruhen, aus Gründen, die sich aus Ihrer besonderen Situation ergeben (Art. 21 DSGVO).</li>
+        </ul>
+        <p>Wenden Sie sich dazu formlos an die oben genannte Kontaktadresse. Außerdem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO), zum Beispiel bei: <R t={l.dpAuthority} /></p>
+
+        <h2>8. Sprachfassungen und Stand</h2>
+        <p>Diese Erklärung gibt es auch in anderen Sprachen. Maßgeblich ist die deutsche Fassung. Stand: <R t={l.privacyDate} /></p>
+      </>
+    )}
+
+    {locale === 'en' && (
+      <>
+        <h1 class="display-lg">Privacy policy</h1>
+        <p class="legal-warning" role="note">Draft – courtesy translation of the German <a href={de} lang="de">Datenschutzerklärung</a>, which is the legally binding version. <R t={l.translationNote} /></p>
+
+        <h2>1. Controller</h2>
+        <p><R t={l.ownerName} /><br /><R t={l.street} /><br /><R t={l.postalCity} /><br />Email: {email ? <a href={`mailto:${email}`}>{email}</a> : <R t={site.contact.email} />}</p>
+        <p>No data protection officer has been appointed, as there is no legal obligation to do so. <R t={l.dpoNote} /></p>
+
+        <h2>2. In short</h2>
+        <ul>
+          <li>This website sets <strong>no cookies</strong> and uses <strong>no tracking</strong> or analytics tools.</li>
+          <li><strong>No third-party content</strong> is loaded (no Google Fonts, maps, videos or social media plugins). Fonts and images are served from our own server.</li>
+          <li>Personal data is processed only when you contact me, and only to handle your enquiry.</li>
+        </ul>
+
+        <h2>3. Hosting and server log files</h2>
+        <p>This website is hosted by: <R t={l.host} /></p>
+        <p>When you visit the website, the hosting provider processes technically necessary data in server log files: IP address, date and time of access, page requested, amount of data transferred, referrer URL, browser and operating system.</p>
+        <p><strong>Purpose:</strong> secure and stable operation of the website, defence against attacks. <strong>Legal basis:</strong> Art. 6(1)(f) GDPR (legitimate interest in secure operation). <strong>Retention:</strong> <R t={l.hostLogRetention} />. A data processing agreement under Art. 28 GDPR is in place with the hosting provider.</p>
+
+        <h2>4. Contacting me (form, email, phone)</h2>
+        <p>If you contact me via the contact form, by email or by phone, I process the information you provide: in the form, your name, email address, your role (e.g. parent, professional, organization), your preferred language and, optionally, your town/region and a short message. The language version of the page you send the enquiry from is also transmitted.</p>
+        <p><strong>Purpose:</strong> handling your enquiry and preparing a possible collaboration. <strong>Legal basis:</strong> Art. 6(1)(b) GDPR (pre-contractual measures) and Art. 6(1)(f) GDPR (legitimate interest in answering general enquiries).</p>
+        <p><strong>Please do not send health data:</strong> the form deliberately does not ask for diagnoses, reports or information about your child's behavior or health. Please do not send such information via the form or unencrypted email; we will discuss it in person. <R t={l.healthDataNote} /></p>
+        <p><strong>Recipients:</strong> form processing: <R t={l.formProcessor} />. Email: <R t={l.mailProvider} />. Data processing agreements are in place with these providers. No data is transferred to countries outside the EU/EEA.</p>
+        <p><strong>Retention:</strong> enquiries that do not lead to a collaboration are deleted after <R t={l.inquiryRetention} />. If we work together, statutory retention periods apply (e.g. under commercial and tax law).</p>
+        <p>The website and the form are transmitted in encrypted form (TLS/HTTPS).</p>
+
+        <h2>5. External links</h2>
+        <p>This website links to other websites (e.g. public registers for verifying credentials, or a booking service). Data is only transferred to these providers when you click the link. Their own privacy policies apply there.</p>
+
+        <h2>6. Cookies and device access</h2>
+        <p>This website neither stores information on your device nor reads it (no cookies, no local storage, no tracking pixels). Consent under § 25 TDDDG is therefore not required, and there is no cookie banner.</p>
+
+        <h2>7. Your rights</h2>
+        <p>You have the right to access (Art. 15 GDPR), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20) and to <strong>object</strong> to processing based on Art. 6(1)(f) GDPR on grounds relating to your particular situation (Art. 21). Contact me informally at the address above. You also have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR), for example: <R t={l.dpAuthority} /></p>
+
+        <h2>8. Language versions and date</h2>
+        <p>The German version of this policy is binding. Date: <R t={l.privacyDate} /></p>
+      </>
+    )}
+    {locale === 'hr' && (
+      <>
+        <h1 class="display-lg">Izjava o privatnosti</h1>
+        <p class="legal-warning" role="note">Sažeti prijevod – pravno je obvezujuća njemačka <a href={de} lang="de">Datenschutzerklärung</a>. <R t={l.translationNote} /></p>
+        <h2>Ukratko</h2>
+        <ul>
+          <li>Ova stranica <strong>ne koristi kolačiće</strong>, ne prati posjetitelje i ne učitava sadržaje trećih strana. Fontovi i slike dolaze s našeg poslužitelja.</li>
+          <li>Osobne podatke obrađujem samo kada me kontaktirate i samo radi obrade upita (čl. 6. st. 1. t. b i f GDPR-a).</li>
+          <li>Obrazac traži ime, e-poštu, Vašu ulogu, željeni jezik te neobavezno mjesto i kratku poruku. <strong>Molim ne šaljite zdravstvene podatke.</strong></li>
+          <li>Hosting i e-pošta: pružatelji usluga u EU s ugovorom o obradi podataka. Nema prijenosa izvan EU/EGP-a.</li>
+          <li>Upite bez daljnje suradnje brišem nakon <R t={l.inquiryRetention} />.</li>
+        </ul>
+        <h2>Voditelj obrade i Vaša prava</h2>
+        <p>Voditelj obrade: vidi <a href={pathFor('imprint', 'hr')}>Impresum</a>. Imate pravo na pristup, ispravak, brisanje, ograničenje obrade, prenosivost podataka i prigovor (čl. 15.–21. GDPR-a) te pravo na pritužbu nadzornom tijelu (čl. 77.).</p>
+      </>
+    )}
+
+    {locale === 'es' && (
+      <>
+        <h1 class="display-lg">Política de privacidad</h1>
+        <p class="legal-warning" role="note">Resumen traducido – la versión vinculante es la <a href={de} lang="de">Datenschutzerklärung</a> en alemán. <R t={l.translationNote} /></p>
+        <h2>En resumen</h2>
+        <ul>
+          <li>Este sitio <strong>no utiliza cookies</strong>, no hace seguimiento y no carga contenidos de terceros. Las fuentes y las imágenes se sirven desde nuestro propio servidor.</li>
+          <li>Solo trato datos personales cuando usted me contacta y únicamente para atender su consulta (art. 6.1 b y f RGPD).</li>
+          <li>El formulario pide nombre, correo, su perfil, el idioma preferido y, de forma opcional, ciudad y un mensaje breve. <strong>Por favor, no envíe datos de salud.</strong></li>
+          <li>Alojamiento y correo: proveedores en la UE con contrato de encargo de tratamiento. Sin transferencias fuera de la UE/EEE.</li>
+          <li>Las consultas que no den lugar a colaboración se borran tras <R t={l.inquiryRetention} />.</li>
+        </ul>
+        <h2>Responsable y sus derechos</h2>
+        <p>Responsable: véase el <a href={pathFor('imprint', 'es')}>aviso legal</a>. Tiene derecho de acceso, rectificación, supresión, limitación, portabilidad y oposición (arts. 15–21 RGPD) y a reclamar ante una autoridad de control (art. 77).</p>
+      </>
+    )}
+  </div></div>
+</section>

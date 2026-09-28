@@ -1,0 +1,17 @@
+---
+import type { ListS } from '../../content/types';
+import Head from './Head.astro';
+import R from '../R.astro';
+interface Props { s: ListS }
+const { s } = Astro.props;
+const Tag = s.ordered ? 'ol' : 'ul';
+---
+<section id={s.id} class:list={['section-tight', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap split">
+    <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+    <div>
+      <Tag class:list={[s.ordered ? 'num-list' : 'check-list']}>{s.items.filter((i) => i.trim()).map((i) => <li><span><R t={i} /></span></li>)}</Tag>
+      {s.after && <p class="small muted" style="margin-top:1.25rem;"><R t={s.after} /></p>}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+---
+/** Frage-Antwort-Blöcke (AEO): Antwort zuerst, 40–60 Wörter. Ohne Abschnittstitel sind die Fragen selbst H2. */
+import type { AnswersS } from '../../content/types';
+import Head from './Head.astro';
+import R from '../R.astro';
+interface Props { s: AnswersS }
+const { s } = Astro.props;
+const Q = s.title ? 'h3' : 'h2';
+---
+<section id={s.id} class:list={['section-tight', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap">
+    <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+    <div class="answers">
+      {s.items.map((it) => (
+        <article class="answer" id={it.id}>
+          <Q class="answer-q">{it.q}</Q>
+          <div class="answer-a">
+            {it.a.filter((p) => p.trim()).map((p) => <p><R t={p} /></p>)}
+            {it.list && <ul class="check-list">{it.list.map((l) => <li><span><R t={l} /></span></li>)}</ul>}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

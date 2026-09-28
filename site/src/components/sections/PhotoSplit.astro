@@ -1,0 +1,29 @@
+---
+import type { PhotoS } from '../../content/types';
+import { content } from '../../content/index';
+import { localeFromPath } from '../../i18n/routes';
+import { resolveHref } from '../../lib/rich';
+import R from '../R.astro';
+import Icon from '../Icon.astro';
+import Photo from '../Photo.astro';
+interface Props { s: PhotoS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const ui = content[locale].ui;
+---
+<section id={s.id} class:list={['section', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class:list={['wrap photo-split', { 'photo-split-reverse': s.reverse, 'photo-split-duo': s.photo2 }]}>
+    <div class="photo-frame">
+      <figure class="frame-1"><Photo name={s.photo} alt={ui.photoAlt[s.photo]} sizes="(min-width: 960px) 38vw, 86vw" /></figure>
+      {s.photo2 && <figure class="frame-2"><Photo name={s.photo2} alt={ui.photoAlt[s.photo2]} sizes="(min-width: 960px) 22vw, 50vw" /></figure>}
+    </div>
+    <div class="photo-copy">
+      {s.eyebrow && <p class="eyebrow">{s.eyebrow}</p>}
+      {s.title && <h2 class="display-md"><R t={s.title} /></h2>}
+      <div class="stack">{s.body.filter((p) => p.trim()).map((p, i) => <p class={i === 0 ? 'lead' : 'muted'}><R t={p} /></p>)}</div>
+      {s.links && (
+        <p class="after-links">{s.links.map((l) => <a class="link-arrow" href={resolveHref(l.href, locale)}>{l.label} <Icon name="arrow" /></a>)}</p>
+      )}
+    </div>
+  </div>
+</section>

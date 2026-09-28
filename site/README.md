@@ -1,58 +1,90 @@
-# Website v2 – Marija Vargas (Astro, statisch)
+# Website v3 – Marija Vargas · Behavior Analysis & Consulting (Astro, statisch, mehrsprachig)
 
-Deutschsprachige, statische Website auf Basis der Evaluation `../docs/2026-09-25-website-evaluation.md`.
-Kein Server, keine Datenbank, keine Cookies, keine Drittanbieter-Requests. Die Schriften sind selbst gehostet (@fontsource).
+Statische, mehrsprachige Website auf Basis von `../docs/2026-09-28-competitor-keyword-research.md`, `../docs/2026-09-28-hanley-pfa-sbt-positioning.md`, `../docs/2026-09-28-market-benchmark-matrix.md` und Marijas Fragebogen-Antworten (28.09.2026).
+Kein Server, keine Datenbank, keine Cookies, keine Drittanbieter-Requests. Schriften und Bilder sind selbst gehostet.
 
 ## Lokal starten
 
-Voraussetzung: Node.js ≥ 22.12 (npm, nicht pnpm).
+Voraussetzung: Node.js ≥ 22.12 (npm).
 
 ```bash
 cd site
 npm install
-npm run dev       # Entwicklung: http://localhost:4321
-npm run build     # erzeugt site/dist/ (reines HTML/CSS, etwa 0,6 MB)
+npm run dev       # http://localhost:4321  → leitet auf /de/ weiter
+npm run build     # erzeugt site/dist/
 npm run preview   # prüft den Build lokal
+node scripts/make-og.mjs   # Social-Vorschaubilder public/og/og-<sprache>.png neu erzeugen
 ```
 
-## Platzhalter füllen (eine Datei)
+## Sprachen und Seiten
 
-Alle unbestätigten Angaben stehen in **`src/content/site.ts`**. Jede davon ist ein `PH('…')`-Aufruf und erscheint auf der Seite gelb markiert als `[[BITTE BESTÄTIGEN: …]]`. Dazu gehören Marke, Qualifikationen, Kontakt, Region, Preise, Foto, Stimmen, Haltungs-Zusagen und die Daten für Impressum und Datenschutz. Die Frage-Codes (B7, C1, E4 …) verweisen auf §5.8 der Evaluation.
+| Sprache | Status | Seiten |
+|---|---|---|
+| **DE** `/de/` | öffentlich, vollständig | Start, Familien (+ Sauber werden, Herausforderndes Verhalten, Nach der Diagnose), Mehrsprachige Familien, Internationale Familien, Fachkräfte, Kitas & Schulen, Über mich, Wie ich arbeite, Programme & Honorar, FAQ, Kontakt (+ Danke), Impressum, Datenschutz – **17 Seiten** + Danke. Dazu `/de/jugendaemter/` (nur DE, **noindex, nicht verlinkt**, wartet auf die arbeitsrechtliche Prüfung). |
+| **EN** `/en/` | öffentlich, vollständig | dieselben 16 Seiten + Danke (Expat-Seite ausführlich; Rechtstexte als „courtesy translation“) |
+| **HR** `/hr/` | gebaut, **versteckt** | Početna, Obitelji, Višejezične obitelji, Stručnjaci, O meni, Programi, Kontakt (+ Hvala), Impresum, Privatnost |
+| **ES** `/es/` | gebaut, **versteckt** | Inicio, Familias, Familias bilingües, Sobre mí, Programas, Contacto (+ Gracias), Aviso legal, Privacidad |
 
-- Einen `PH('…')`-Aufruf durch den bestätigten Text ersetzen und neu bauen.
-- Nicht zutreffende Punkte löschen, zum Beispiel einzelne Haltungs-Zusagen oder `haltungNote: ''`.
-- Nicht bestätigte Werte gelangen nie in JSON-LD oder `llms.txt`, und ihre Links (mailto/tel) bleiben aus.
-- Die Texte der Seiten liegen in `src/pages/*.astro`, die FAQ in `src/content/faq.ts`.
-- Die Domain wird in `astro.config.mjs` oder per `SITE_URL` in `.env` gesetzt. Der Platzhalter `https://vargas-behavior.example` funktioniert absichtlich nie.
-- `public/og-image.png` ist ein generiertes Vorschaubild (1200×630). Durch ein finales Motiv ersetzen.
+- **`site.showHrEs = false`** (in `src/content/site.ts`): HR/ES-Seiten werden gebaut, sind aber `noindex`, fehlen in Sitemap, hreflang und Sprachumschalter. Nach Marijas Sprachprüfung auf `true` setzen.
+- `/` leitet auf `/de/` weiter (`public/index.html` sofort, `public/.htaccess` als echte 301 bei Apache).
+- Nicht angeboten (Fragebogen): **Schlafprobleme, Essen/Fütterung** – dazu gibt es keine Seiten. Keine Partnerlinie mit der Schwester („nicht jetzt“); Duo-Fotos liegen ungenutzt in `src/assets/photos/`.
 
-**Vor dem Launch** muss dieser Befehl leer bleiben: `grep -r "BITTE BESTÄTIGEN" dist`. Impressum und Datenschutz müssen außerdem rechtlich geprüft sein.
+### Native review by Marija needed (HR/ES)
+Jede HR/ES-Seite trägt `data-review="translation"` auf `<main>`. Zu prüfen: `src/content/hr/*` (Kroatisch, formelles „Vi“) und `src/content/es/*` (Spanisch, „usted“), plus die HR/ES-Zweige in `src/components/views/ImprintView.astro` und `PrivacyView.astro`.
+
+## Aufbau
+
+| Pfad | Inhalt |
+|---|---|
+| `src/i18n/routes.ts` | **Routen-Register**: eine Zeile je Seite mit Pfaden je Sprache → Seiten, hreflang (+ x-default = EN), Sprachumschalter (gleiche Seite, sonst Startseite der Sprache), Brotkrumen, Sitemap |
+| `src/pages/[...slug].astro` | baut alle Seiten aus dem Register |
+| `src/content/site.ts` | **alle unbestätigten Angaben** (`PH('…')`) + Schalter (`showHrEs`, `photosAreSamples`, `prices.show`) |
+| `src/content/<de\|en\|hr\|es>/` | Texte je Sprache: `ui.ts`, `pages*.ts`, `programs.ts`, `faq.ts` (+ Grundsätze), `contact.ts`, `approach.ts` (PFA/SBT-Formulierungen an **einer** Stelle) |
+| `src/components/sections/` | Abschnitts-Vorlagen (Hero, Antworten, Karten, Programme, Foto, FAQ, CTA …) für alle Sprachen |
+| `src/components/views/` | Kontakt, Danke, Impressum, Datenschutz |
+| `astro.config.mjs` | i18n (`prefixDefaultLocale: true`), Sitemap je Sprache mit hreflang-Paaren |
+
+Mini-Auszeichnung in Texten: `**fett**`, `*Akzent*`, `[Link](@seitenschluessel#anker)` – `@key` wird zur Seite in der aktuellen Sprache.
+
+## Platzhalter füllen
+
+Jeder `PH('…')`-Aufruf in `src/content/site.ts` erscheint gelb als `[[BITTE BESTÄTIGEN: …]]` und nie in JSON-LD oder `llms.txt`. Stand: ca. 100 Markierungen je Sprache (viele davon im Impressum/Datenschutz). Offen sind u. a.:
+- Region für Termine vor Ort (E1), Erfahrungsjahre USA/DE (C4), Werdegang, persönlicher Abschnitt (Mutterschaft optional, löschbar), Stimmen (C5).
+- PFA-SBT-**Credential-Stufe** (4 oder 6), Gültigkeit, FTF-Directory-Link; IBAO-Registerlink; Stelle der Anerkennung (ZAB?).
+- Kontakt (E-Mail, Telefon), Antwortzeit, Video-Tool, Reisebereitschaft, „Keine Warteliste“ (nur wenn Kapazität bestätigt).
+- Absagefrist, Zahlungsbedingungen, Spanisch-Umfang (Q4), Fortbildungsthemen (E9).
+- Rechtliches: Inhaberin, Rechtsform, Anschrift, USt-IdNr., Hosting, Formularverarbeitung, Aufsichtsbehörde …; anwaltliche Prüfung der Übersetzungen.
+- Freigabe des Angebots für Jugendämter/Träger erst nach arbeitsrechtlicher Prüfung (Q1).
+
+**Bestätigt und veröffentlicht** (Fragebogen): IBA (IBAO); MA Child Studies, Linköping University (Schweden) 2020; BA Neuroscience, Earlham College (USA); FTF-Fortbildung PFA/SBT seit 2021; Anerkennung des Abschlusses in Deutschland; Altersgruppe 0–12; alle 7 Haltungs-Zusagen; Sprachen HR/DE/EN/ES; Marke „Marija Vargas · Behavior Analysis & Consulting“ (Alternative „VerbaCareEdu“ nur als Kommentar).
+
+**Vor dem Launch** muss leer bleiben: `grep -r "BITTE BESTÄTIGEN" dist`.
+
+## Inhaltliche Regeln (bitte beibehalten)
+
+- **Keine Preise.** `prices.show = false` → überall „Honorar auf Anfrage / Fees on request“; CTA ist das kostenlose 15-Minuten-Kennenlerngespräch. Die Preisvorschläge (Research §7) bleiben in `site.ts` für später.
+- **„Verhaltensanalyse / behavior analysis“ statt „ABA“** in Titeln, Überschriften, Navigation, Meta und Hero. „ABA“ steht nur in **einer** FAQ-Antwort („Was unterscheidet meine verhaltensanalytische Arbeit von der Kritik an ABA?“) auf `/de/faq/` bzw. `/en/faq/`.
+- Keine Approbation → das eigene Angebot nie „Therapie“ nennen. Keine Diagnostik, keine Notfallversorgung.
+- PFA/SBT: „entwickelt von Dr. Gregory Hanley und Kolleg:innen“; nie „zertifiziert“, „Hanley-Methode“, „FTF-Partnerin“, kein Logo, kein Foto mit ihm. Keine BACB-Supervisionsstunden.
+- Der frühere Arbeitgeber wird nirgends genannt. Keine Kinderfotos, kein Eventfoto (Nr. 14).
+- Stadt erst nach Bestätigung in Titel/Meta aufnehmen (Kommentare in `de/pages.ts`, `en/faq.ts`).
+
+## Fotos
+
+`src/assets/photos/` über `astro:assets` (AVIF/WebP + JPG, Breiten 320–1200 px, feste Maße, lazy außer im Hero). Porträts sind **Beispielbilder, teils KI-generiert** → `photosAreSamples: true` zeigt im Footer „Beispielbilder“. Nach dem echten Shooting (Research §9.2) Dateien gleichen Namens ersetzen und den Schalter auf `false` setzen. Alt-Texte je Sprache in `src/content/<sprache>/ui.ts`.
+
+## Farben & Kontrast (WCAG 2.2 AA, gemessen)
+
+Elfenbein `#f7f3ec`, Papier `#fcfaf6`, Sand `#ede4d8`, Seeglas `#dfe8e1`, Lavendel `#e6e3ef`, Waldgrün `#183b30`, Terrakotta `#8b4739`. Kleinster Textkontrast **5,19 : 1** (Fehlertext auf Lavendel); Fließtext 6,1–11,8 : 1; Primärbutton 6,5 : 1; auf Waldgrün ≥ 6,3 : 1. Geprüft ohne horizontales Scrollen bei 375 px und 1366 px.
 
 ## Kontaktformular
 
-`.env.example` nach `.env` kopieren. Werte in `PUBLIC_*` werden **beim Build** fest eingebaut.
+`.env.example` nach `.env` kopieren; `PUBLIC_*` wird beim Build eingebaut. Ohne `PUBLIC_FORM_ENDPOINT` zeigt `/de/kontakt/` einen ehrlichen E-Mail-Hinweis. Felder: `name`, `email`, `anliegen`, `sprache`, `region`, `nachricht`, `datenschutz`, technisch `seite`, `danke`, Honeypot `website`. Keine Gesundheitsdaten im Formular.
 
-- Ist `PUBLIC_FORM_ENDPOINT` leer, zeigt `/kontakt/` kein Formular, sondern einen E-Mail-Hinweis. Die Seite täuscht keinen Versand vor.
-- Ist `PUBLIC_FORM_ENDPOINT` gesetzt, sendet das Formular per POST die Felder `name`, `email`, `anliegen`, `region`, `nachricht`, `datenschutz` und das Honeypot-Feld `website` (muss leer sein).
-  - Mit JavaScript zeigt die Seite „angekommen“ nur bei HTTP 2xx, sonst eine Fehlermeldung. Liegt der Endpunkt auf einer anderen Domain, muss er CORS erlauben.
-  - Ohne JavaScript leitet der Endpunkt nach Erfolg auf `/kontakt/danke/` weiter (303).
-- Empfohlen (Evaluation §4): ein kleiner PHP-Mailer auf demselben EU-Host oder ein EU-Formulardienst mit AVV. Er prüft die Eingaben serverseitig, verwirft Anfragen mit ausgefülltem Honeypot und speichert nichts in einer eigenen Datenbank.
-- `PUBLIC_NOINDEX=true` sperrt die Indexierung (robots.txt und Meta-Tag). Das gilt für Test-Deployments mit Platzhaltern.
+## Deployment (EU-Host)
 
-## Deployment (beliebiger statischer EU-Host)
-
-1. `SITE_URL` und gegebenenfalls `PUBLIC_FORM_ENDPOINT` setzen, dann `npm run build` ausführen.
-2. Den **Inhalt** von `site/dist/` per SFTP/FTP oder Git-Deploy in das Web-Root laden, zum Beispiel bei Hetzner, IONOS, All-Inkl, netcup oder Uberspace. Mit dem Host einen AVV abschließen und HTTPS aktivieren.
-3. `404.html` als Fehlerseite eintragen. Bei Apache: `ErrorDocument 404 /404.html` in `.htaccess`.
-4. Die Sitemap `https://<domain>/sitemap-index.xml` in der Google Search Console einreichen.
-5. Keine Skripte, Karten, Videos oder Buchungs-Widgets einbetten, nur verlinken. Sonst müssen Datenschutz und Consent angepasst werden.
-
-## Umgesetzt (Kurzfassung)
-
-- **Seiten:** Start, Leistungen mit Familien, Fachkräften und Institutionen & Jugendämtern, Fortbildung & Supervision, Über Marija, FAQ, Kontakt (+ Danke), Impressum, Datenschutz und eine deutsche 404-Seite.
-- **SEO/AEO:** Titel und Description je Seite, Canonical, Open Graph, JSON-LD (ProfessionalService, Person, Service, BreadcrumbList, FAQPage), `sitemap-index.xml`, `robots.txt` und `llms.txt`.
-- **Barrierefreiheit:** `lang="de"`, kein Zoom-Verbot, Skip-Link, sichtbarer Fokus, Menü mit Escape-Taste, Mindestgröße 12 px, Tap-Ziele ab 24 px und reduzierte Bewegung. Alle Texte erreichen mindestens 4,96:1 (WCAG AA). Gemessen wurde bei 1366 und 375 px.
-- **Farben:**
-  - Primärbutton Terrakotta `#8e493b` mit `#fff8ef` (6,3:1).
-  - Koralle `#d96d58` nur noch als Deko.
-  - Auf Dunkelgrün `#f2a591` (6,2:1).
+1. `SITE_URL` (und ggf. `PUBLIC_FORM_ENDPOINT`) setzen, `npm run build`.
+2. Inhalt von `dist/` hochladen; AVV mit dem Host; HTTPS.
+3. `/` → `/de/` als 301 und `404.html` als Fehlerseite (Apache: `public/.htaccess`).
+4. `sitemap-index.xml` (Sitemaps je Sprache) in der Search Console einreichen.
+5. Keine Skripte, Karten, Videos oder Buchungs-Widgets einbetten – nur verlinken.

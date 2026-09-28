@@ -1,0 +1,18 @@
+---
+import type { RelatedS } from '../../content/types';
+import { localeFromPath } from '../../i18n/routes';
+import { resolveHref } from '../../lib/rich';
+import Head from './Head.astro';
+import Icon from '../Icon.astro';
+interface Props { s: RelatedS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+---
+<section id={s.id} class:list={['section-tight', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap split">
+    <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+    <ul class="rule-list">
+      {s.links.map((l) => <li><a class="link-arrow" href={resolveHref(l.href, locale)}>{l.label} <Icon name="arrow" /></a></li>)}
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+---
+import type { DefsS } from '../../content/types';
+import Head from './Head.astro';
+import R from '../R.astro';
+interface Props { s: DefsS }
+const { s } = Astro.props;
+---
+<section id={s.id} class:list={['section-tight', s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap split">
+    <Head eyebrow={s.eyebrow} title={s.title} intro={s.intro} />
+    <dl class="meta-list">{s.items.map((i) => <div><dt>{i.dt}</dt><dd><R t={i.dd} /></dd></div>)}</dl>
+  </div>
+</section>

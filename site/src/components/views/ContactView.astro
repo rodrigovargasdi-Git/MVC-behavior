@@ -1,0 +1,208 @@
+---
+/**
+ * Kontaktseite (alle Sprachen). Formular-Endpunkt aus .env (PUBLIC_FORM_ENDPOINT).
+ * Leer = kein Formular, ehrlicher E-Mail-Hinweis. Keine Gesundheitsdaten im Formular (Evaluation M10).
+ * Felder: name, email, anliegen, sprache, region, nachricht, datenschutz, seite (Sprache der Seite), website (Honeypot).
+ */
+import Icon from '../Icon.astro';
+import R from '../R.astro';
+import Photo from '../Photo.astro';
+import { site, confirmed, anliegenValues } from '../../content/site';
+import { content } from '../../content/index';
+import { locales, localeMeta, pathFor, type Locale } from '../../i18n/routes';
+import { rich } from '../../lib/rich';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const { ui, contact: c } = content[locale];
+
+const endpoint = (import.meta.env.PUBLIC_FORM_ENDPOINT ?? '').trim();
+const email = confirmed(site.contact.email);
+const phone = confirmed(site.contact.phone);
+const booking = confirmed(site.contact.bookingUrl);
+const mailto = email
+  ? `mailto:${email}?subject=${encodeURIComponent(c.mailSubject)}&body=${encodeURIComponent(c.mailBody.join('\n'))}`
+  : undefined;
+const messages = { sending: c.sending, ok: c.ok, err: c.err, errors: c.errors };
+const thanks = pathFor('thanks', locale);
+---
+<section class="hero hero-contact">
+  <div class="wrap">
+    <p class="eyebrow">{c.eyebrow}</p>
+    <h1 class="display-lg"><R t={c.h1} /></h1>
+    <p class="lead hero-lead"><R t={c.lead} /></p>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="wrap contact-grid">
+    <div class="stack-lg">
+      <figure class="contact-photo"><Photo name="realSmile" alt={ui.photoAlt.realSmile} sizes="(min-width: 960px) 180px, 140px" /></figure>
+      <div>
+        <h2 class="h-plain">{c.directTitle}</h2>
+        <ul class="contact-list">
+          <li><Icon name="mail" size={20} />{email ? <a href={`mailto:${email}`}>{email}</a> : <span><R t={site.contact.email} /></span>}</li>
+          <li><Icon name="phone" size={20} />{phone ? <a href={`tel:${phone.replace(/[^+\d]/g, '')}`}>{phone}</a> : <span><R t={site.contact.phone} /></span>}</li>
+          <li><Icon name="pin" size={20} /><span><span class="visually-hidden">{c.area}: </span><R t={site.offer.serviceArea[locale]} /></span></li>
+        </ul>
+        {booking && <p style="margin-top:1rem;"><a class="link-arrow" href={booking} rel="noopener">{c.booking} <Icon name="arrow-up" /></a></p>}
+      </div>
+
+      <div class="note note-strong">
+        <Icon name="shield" size={20} />
+        <p><strong>{c.noHealthTitle}</strong> {c.noHealth}</p>
+      </div>
+
+      <div>
+        <h2 class="h-plain">{c.nextTitle}</h2>
+        <ol class="next-steps">{c.next.map((n) => <li>{n}</li>)}</ol>
+      </div>
+    </div>
+
+    <div class="form-card" id="anfrage">
+      {endpoint ? (
+        <form action={endpoint} method="post" novalidate data-contact-form data-i18n={JSON.stringify(messages)}>
+          <h2 class="display-sm">{c.formTitle}</h2>
+          <p class="small muted" style="margin-top:0.5rem;">{c.required}</p>
+          <input type="hidden" name="seite" value={locale} />
+          {thanks && <input type="hidden" name="danke" value={thanks} />}
+
+          <div class="field-row" style="margin-top:1.5rem;">
+            <div class="field">
+              <label for="f-name">{c.name} *</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required maxlength="120" aria-describedby="f-name-err" />
+              <p class="field-error" id="f-name-err"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">{c.email} *</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="200" aria-describedby="f-email-err" />
+              <p class="field-error" id="f-email-err"></p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="f-anliegen">{c.role} *</label>
+              <select id="f-anliegen" name="anliegen" required aria-describedby="f-anliegen-err">
+                <option value="">{c.rolePlaceholder}</option>
+                {anliegenValues.map((v) => <option value={v}>{c.roles[v]}</option>)}
+              </select>
+              <p class="field-error" id="f-anliegen-err"></p>
+            </div>
+            <div class="field">
+              <label for="f-sprache">{c.language}</label>
+              <select id="f-sprache" name="sprache">
+                {locales.map((l) => <option value={l} lang={localeMeta[l].bcp47} selected={l === locale}>{localeMeta[l].label}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-region">{c.region} <span class="muted">{c.optional}</span></label>
+            <input id="f-region" name="region" type="text" autocomplete="address-level2" maxlength="120" />
+          </div>
+
+          <div class="field">
+            <label for="f-nachricht">{c.message} <span class="muted">{c.optional}</span></label>
+            <textarea id="f-nachricht" name="nachricht" rows="4" maxlength="600" aria-describedby="f-nachricht-hint"></textarea>
+            <p class="hint" id="f-nachricht-hint">{c.messageHint}</p>
+          </div>
+
+          <div class="hp" aria-hidden="true">
+            <label for="f-website">{c.honeypot}</label>
+            <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="check">
+            <input id="f-datenschutz" name="datenschutz" type="checkbox" value="gelesen" required aria-describedby="f-datenschutz-err" />
+            <label for="f-datenschutz"><Fragment set:html={rich(c.privacy, locale)} /> *</label>
+          </div>
+          <p class="field-error" id="f-datenschutz-err"></p>
+
+          <button class="btn btn-primary" type="submit" style="margin-top:1.5rem; width:100%;" data-submit>{c.submit} <Icon name="arrow" /></button>
+          <div class="form-status" role="status" aria-live="polite" data-status></div>
+        </form>
+      ) : (
+        <div class="stack" data-form-fallback>
+          <h2 class="display-sm">{c.fallbackTitle}</h2>
+          <p>{c.fallbackText}</p>
+          {mailto ? <p><a class="btn btn-primary" href={mailto}>{c.fallbackMail} <Icon name="mail" /></a></p> : <p><R t={site.contact.email} /></p>}
+          <p class="small muted"><R t={c.fallbackHint} /></p>
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const t = JSON.parse(form.dataset.i18n || '{}') as {
+      sending: string; ok: string; err: string;
+      errors: { name: string; email: string; role: string; privacy: string };
+    };
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const select = form.querySelector<HTMLSelectElement>('#f-anliegen')!;
+
+    // Vorauswahl über ?anliegen=familie usw. (Links von den Angebotsseiten).
+    const pre = new URLSearchParams(location.search).get('anliegen');
+    if (pre && [...select.options].some((o) => o.value === pre)) select.value = pre;
+
+    const fields: [string, (el: HTMLInputElement) => string][] = [
+      ['f-name', (el) => (el.value.trim() ? '' : t.errors.name)],
+      ['f-email', (el) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()) ? '' : t.errors.email)],
+      ['f-anliegen', (el) => (el.value ? '' : t.errors.role)],
+      ['f-datenschutz', (el) => (el.checked ? '' : t.errors.privacy)],
+    ];
+
+    const validate = () => {
+      let first: HTMLElement | null = null;
+      for (const [id, check] of fields) {
+        const el = document.getElementById(id) as HTMLInputElement;
+        const msg = check(el);
+        document.getElementById(`${id}-err`)!.textContent = msg;
+        el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+        if (msg && !first) first = el;
+      }
+      if (first) first.focus();
+      return !first;
+    };
+
+    const show = (kind: 'ok' | 'err', html: string) => { status.innerHTML = `<div class="status-${kind}">${html}</div>`; };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      if (!validate()) return;
+      submit.disabled = true;
+      const label = submit.innerHTML;
+      submit.textContent = t.sending;
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        show('ok', t.ok);
+      } catch {
+        show('err', t.err);
+      } finally {
+        submit.disabled = false;
+        submit.innerHTML = label;
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact-grid { display: grid; gap: 2.5rem; align-items: start; }
+  @media (max-width: 959px) { .contact-grid .form-card { order: -1; } }
+  @media (min-width: 960px) { .contact-grid { grid-template-columns: 0.85fr 1.15fr; gap: 4rem; } }
+  .contact-photo { margin: 0; width: 140px; }
+  .contact-photo :global(img) { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 999px 999px var(--radius) var(--radius); }
+  @media (min-width: 960px) { .contact-photo { width: 180px; } }
+  .contact-list { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+  .contact-list li { display: flex; gap: 0.75rem; align-items: flex-start; min-height: 44px; padding-top: 0.6rem; }
+  .contact-list :global(svg) { flex: none; color: var(--accent); margin-top: 0.2rem; }
+  .note :global(svg) { flex: none; color: var(--accent); margin-top: 0.2rem; }
+  .next-steps { margin: 0.75rem 0 0; padding-left: 1.25rem; display: grid; gap: 0.5rem; color: var(--ink-muted); }
+</style>

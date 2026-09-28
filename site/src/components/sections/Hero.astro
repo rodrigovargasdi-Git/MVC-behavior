@@ -1,0 +1,38 @@
+---
+import type { HeroS } from '../../content/types';
+import { content } from '../../content/index';
+import { localeFromPath } from '../../i18n/routes';
+import { ctaHref } from '../../lib/cta';
+import { resolveHref } from '../../lib/rich';
+import R from '../R.astro';
+import Icon from '../Icon.astro';
+import Photo from '../Photo.astro';
+interface Props { s: HeroS }
+const { s } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const ui = content[locale].ui;
+const home = s.variant === 'home';
+---
+<section class:list={['hero', { 'hero-home': home, 'hero-has-photo': s.photo }, s.bg && s.bg !== 'none' && `bg-${s.bg}`]}>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      {s.eyebrow && <p class="eyebrow">{s.eyebrow}</p>}
+      <h1 class:list={[home ? 'display-lg hero-h1-home' : 'display-lg']}><R t={s.title} /></h1>
+      {s.lead && <p class="lead hero-lead"><R t={s.lead} /></p>}
+      {(s.primary || s.secondary) && (
+        <div class="btn-row hero-actions">
+          {s.primary && <a class="btn btn-primary" href={ctaHref(s.primary, locale)}>{ui.cta[s.primary]} <Icon name="arrow" /></a>}
+          {s.secondary && <a class="btn btn-outline" href={resolveHref(s.secondary.href, locale)}>{s.secondary.label}</a>}
+        </div>
+      )}
+      {(s.trust ?? (home ? ui.trust : undefined)) && (
+        <p class="hero-trust"><Icon name="shield" size={18} /> <span>{s.trust ?? ui.trust}</span></p>
+      )}
+    </div>
+    {s.photo && (
+      <figure class:list={['hero-photo', { 'hero-photo-home': home }]}>
+        <Photo name={s.photo} alt={ui.photoAlt[s.photo]} sizes={home ? '(min-width: 960px) 42vw, 86vw' : '(min-width: 960px) 32vw, 70vw'} eager />
+      </figure>
+    )}
+  </div>
+</section>
