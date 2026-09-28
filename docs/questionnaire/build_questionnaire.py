@@ -58,7 +58,8 @@ QUESTIONS = [
     ("text", "current_role", "Your current role (e.g. supervisor: programme design, milestones, data systems, internal workshops) — how may we describe it without naming your employer?", 3),
 
     ("section", "3b. Your approach: PFA & SBT (Dr. Gregory Hanley)", "Your work follows Practical Functional Assessment and Skill-Based Treatment — a strong, compassionate answer to ABA criticism."),
-    ("text", "ftf_level", "Your FTF / PFA-SBT training or certification: exact name, level, year (please copy the wording from your certificate)", 3),
+    ("check", "ftf_level", "Your current FTF PFA-SBT Credential level (7 levels; higher = more advanced)", ["1 Education", "2 Application", "3 Support", "4 Lead", "5 Advanced", "6 Supervision", "7 Consultation", "Not credentialed yet"], "Level 6 (Supervision) requires an independent practitioner credential such as BCBA. The credential is renewed yearly."),
+    ("text", "ftf_details", "Since which year? Valid until (MM/YYYY)? Link to your entry in the FTF credential directory, if any", 2),
     ("check", "ftf_topics", "What you have done with PFA/SBT (tick all)", ["Implemented PFA / IISCA with clients", "Implemented SBT programmes", "Trained colleagues / gave workshops", "Supervised others in PFA/SBT", "Attended Dr. Hanley's seminars", "Other"], ""),
     ("check", "hanley_name", "May we mention Dr. Hanley / FTF Behavioral Consulting by name on the website?", ["Yes, as the approach I follow (no endorsement implied) (recommended)", "Only the method names (PFA, SBT)", "No"], "We never use their logos or imply endorsement unless FTF allows it."),
     ("check", "event_photo", "The event photo with Dr. Hanley and his colleague — may we use it?", ["Yes, both have given written consent", "I will ask them", "No, keep it private"], ""),
