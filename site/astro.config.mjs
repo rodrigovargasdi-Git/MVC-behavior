@@ -15,6 +15,8 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   build: { format: 'directory' },
+  // Dev/preview port: PORT from the environment (preview tools assign a free one), else Astro's default 4321.
+  server: { port: Number(process.env.PORT) || 4321 },
 
   // Sprachen als Unterordner /de/ /en/ /hr/ /es/ (Research §5.1).
   // „/“ → /de/: statisch über public/index.html (sofortige Weiterleitung) und als echte 301 über public/.htaccess.
